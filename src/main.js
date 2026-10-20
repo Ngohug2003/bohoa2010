@@ -75,6 +75,7 @@ function setGarden(open){
     document.querySelector('#garden-controls').hidden=!open;
     if(open){
       spawnFloatingFlowers(innerWidth<=720?6:8);
+      celebrateFlowers({x:innerWidth*.52,y:innerHeight*.65});
       document.querySelector('#garden-title').focus({preventScroll:true});
     }else{
       resetExtras();
@@ -157,17 +158,18 @@ function removeFloatingFlower(record){
  record.node.remove();floatingFlowers.delete(record);
 }
 function resetExtras(){
+ clearCelebration();
  [...floatingFlowers].forEach(removeFloatingFlower);flowerRound=0;flowerSequence=0;
 }
 function animateFlowerDrift(record){
  if(!record.node.isConnected||reducedMotion.matches)return;
  const {node,x,y,width,height,rotation}=record;
  const mobile=innerWidth<=720;
- const amplitude=mobile?22:48;
+ const amplitude=mobile?42:84;
  const safeX=value=>Math.max(-width*.28,Math.min(innerWidth-width*.72,value));
  const safeY=value=>Math.max(64-height*.12,Math.min(innerHeight-height*.65-55,value));
- const path=[[x,y,rotation],[x+amplitude,y-30,rotation+7],[x-amplitude*.4,y-57,rotation-5],[x-amplitude*.8,y+16,rotation+4],[x,y,rotation]];
- const animation=node.animate(path.map(([px,py,r])=>({transform:`translate3d(${safeX(px)}px,${safeY(py)}px,0) rotate(${r}deg)`,opacity:record.opacity})),{duration:18000+Math.random()*12000,iterations:Infinity,easing:'ease-in-out'});
+ const path=[[x,y,rotation],[x+amplitude,y-55,rotation+14],[x-amplitude*.35,y-105,rotation-11],[x-amplitude*.85,y+25,rotation+9],[x,y,rotation]];
+ const animation=node.animate(path.map(([px,py,r])=>({transform:`translate3d(${safeX(px)}px,${safeY(py)}px,0) rotate(${r}deg)`,opacity:record.opacity})),{duration:7000+Math.random()*4000,iterations:Infinity,easing:'ease-in-out'});
  if(document.hidden)animation.pause();
 }
 function spawnFloatingFlowers(count,origin=null,immediate=false){
@@ -192,17 +194,49 @@ function spawnFloatingFlowers(count,origin=null,immediate=false){
   const entrance=node.animate([
    {transform:`translate3d(${from.x-width/2}px,${from.y-height/2}px,0) rotate(${rotation-30}deg) scale(.18)`,opacity:0},
    {transform:`translate3d(${x}px,${y}px,0) rotate(${rotation}deg) scale(1)`,opacity},
-  ],{duration:1500+i*65,delay:i*85,easing:'cubic-bezier(.2,.7,.2,1)',fill:'backwards'});
+  ],{duration:850+i*45,delay:i*50,easing:'cubic-bezier(.2,.7,.2,1)',fill:'backwards'});
   entrance.finished.then(()=>animateFlowerDrift(record)).catch(()=>{/* Removed flowers cancel their entrance. */});
   if(document.hidden)entrance.pause();
  }
 }
+// Short, bounded accents animate only opacity and transforms.
+const celebrationEffects=new Set();
+function clearCelebration(){
+ celebrationEffects.forEach(node=>{
+  node.getAnimations().forEach(animation=>animation.cancel());node.remove();
+ });
+ celebrationEffects.clear();
+}
+function celebrateFlowers(origin){
+ clearCelebration();
+ if(reducedMotion.matches||document.hidden)return;
+ const mobile=innerWidth<=720,count=mobile?8:12;
+ for(let i=0;i<count;i++){
+  const petal=document.createElement('span');
+  petal.className=i%3===0?'celebration-spark':'celebration-petal';petal.setAttribute('aria-hidden','true');
+  experience.append(petal);celebrationEffects.add(petal);
+  const angle=(i/count*Math.PI*2)+Math.random()*.3;
+  const distance=(mobile?75:110)+Math.random()*(mobile?95:150);
+  const dx=Math.cos(angle)*distance,dy=Math.sin(angle)*distance-45;
+  const r=i*32;
+  const animation=petal.animate([
+   {transform:`translate3d(${origin.x}px,${origin.y}px,0) rotate(${r}deg) scale(.25)`,opacity:0,offset:0},
+   {transform:`translate3d(${origin.x+dx*.25}px,${origin.y+dy*.4}px,0) rotate(${r+35}deg) scale(1)`,opacity:.9,offset:.22},
+   {transform:`translate3d(${origin.x+dx}px,${origin.y+dy}px,0) rotate(${r+130}deg) scale(.65)`,opacity:0,offset:1},
+  ],{duration:950+Math.random()*450,delay:i*20,easing:'cubic-bezier(.15,.6,.35,1)',fill:'both'});
+  animation.finished.catch(()=>{}).finally(()=>{petal.remove();celebrationEffects.delete(petal);});
+ }
+}
+reducedMotion.addEventListener('change',()=>{if(reducedMotion.matches)clearCelebration();});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)clearCelebration();});
+
 function addFlowers(event){
  if(!gardenOpen)return;
  flowerRound++;
  const rect=document.querySelector('#more-flowers').getBoundingClientRect();
  const origin=event?.clientX?{x:event.clientX,y:event.clientY}:{x:rect.left+rect.width/2,y:rect.top+rect.height/2};
  spawnFloatingFlowers(4,origin);
+ celebrateFlowers(origin);
  announce(`Thêm 4 bông hoa đang bay nhẹ trên màn hình. Lần ${flowerRound}.`);
 }
 function refreshFloatingFlowers(){

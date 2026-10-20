@@ -80,3 +80,14 @@ body{-webkit-font-smoothing:auto;text-rendering:optimizeLegibility}
 
 /* Shift the bouquet left by exactly 5px at every screen size. */
 .flower-hit{margin-left:-5px}
+
+
+/* Small, temporary bursts; no canvas, blur or frame-by-frame script. */
+.celebration-petal,.celebration-spark{position:absolute;top:0;left:0;z-index:4;pointer-events:none;will-change:transform,opacity}
+.celebration-petal{width:11px;height:17px;border-radius:75% 15% 70% 20%;background:linear-gradient(135deg,#fff2df,#f4b9cd 55%,#c77698)}
+.celebration-spark{width:10px;height:10px}
+.celebration-spark::before,.celebration-spark::after{content:'';position:absolute;inset:0;background:#fff4d9;border-radius:50%;transform:scaleX(.18)}
+.celebration-spark::after{transform:scaleY(.18)}
+.main-flower{animation-duration:6s}
+.bloom-button:active{scale:.97}
+@media(prefers-reduced-motion:reduce){.celebration-petal,.celebration-spark{display:none}.bloom-button:active{scale:1}}
