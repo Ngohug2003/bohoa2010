@@ -1,20 +1,58 @@
 import './style.css';
 
+// The family subdomain and its standalone entry share the same interaction code.
+const familyEdition=location.hostname==='giadinh.20th10.io.vn'||document.documentElement.dataset.audience==='family';
+const copy=familyEdition?{
+  eyebrow:'20/10 · GỬI NHỮNG NGƯỜI PHỤ NỮ CỦA GIA ĐÌNH',
+  headline:['Gửi cả nhà','chút hoa,','thêm chút','niềm vui.'],
+  description:'Một bó hoa nhỏ gửi đến cả nhà.<br>Chúc gia đình mình một ngày 20/10 thật vui!',
+  button:'Cả nhà nhận hoa nhé!',
+  label:'BÓ HOA GỬI GIA ĐÌNH',
+  labelNote:'Một chút hoa, niềm vui cho cả nhà.',
+  sideCaption:'FOR MY FAMILY — 20.10',
+  gardenEyebrow:'HOA CHO CẢ NHÀ, NIỀM VUI NHÂN ĐÔI',
+  gardenTitle:'Cười rạng rỡ,<br><em>theo cách của cả nhà.</em>',
+  gardenWish:'Chúc những người phụ nữ của gia đình<br>thật hạnh phúc và vui vẻ!',
+  signature:'20/10 vui vẻ và hạnh phúc nha cả nhà! ✿',
+  footer:'GỬI GIA ĐÌNH MÌNH NHỮNG ĐIỀU TỐT ĐẸP NHẤT ✿',
+  announcement:'Hoa đã nở. Chúc cả nhà 20/10 vui vẻ và hạnh phúc!',
+  musicError:'Không thể phát nhạc nền. Cả nhà thử tải lại trang nhé.',
+}:{
+  eyebrow:'20/10 · GỬI ĐỨA BẠN THÂN CỦA TỚ',
+  headline:['Gửi cậu','chút hoa,','thêm chút','niềm vui.'],
+  description:'Hoa này tớ chọn, niềm vui cậu nhận nhé.<br>Chúc cậu một ngày 20/10 thật vui!',
+  button:'Nhận hoa nè!',
+  label:'BÓ HOA CHO BẠN THÂN',
+  labelNote:'Một chút hoa, một chút vui.',
+  sideCaption:'JUST FOR MY BESTIE — 20.10',
+  gardenEyebrow:'HOA CHO CẬU, NIỀM VUI NHÂN ĐÔI',
+  gardenTitle:'Cứ rạng rỡ,<br><em>theo cách của cậu.</em>',
+  gardenWish:'Chúc cậu bớt deadline, thêm nhiều niềm vui,<br>ăn ngon, ngủ đủ và cứ tự tin làm điều mình thích.',
+  signature:'20/10 vui vẻ nha, bạn thân! ✿',
+  footer:'CẢM ƠN VÌ ĐÃ LÀ BẠN THÂN CỦA TỚ ✿',
+  announcement:'Hoa đã nở. Chúc cậu 20/10 thật vui, bạn thân nhé!',
+  musicError:'Không thể phát nhạc nền. Cậu thử tải lại trang nhé.',
+};
+if(familyEdition){
+ document.title='Gửi gia đình — Một bó hoa cho ngày 20/10';
+ document.querySelector('meta[name="description"]').content='Hoa cho cả nhà, niềm vui nhân đôi. Chúc những người phụ nữ của gia đình một ngày 20/10 thật hạnh phúc và vui vẻ.';
+}
+
 const flowerIcon = `<svg viewBox="0 0 32 32" fill="none" aria-hidden="true">${Array.from({length:8},(_,i)=>`<ellipse cx="16" cy="9" rx="3.4" ry="6.8" transform="rotate(${i*45} 16 16)" fill="currentColor"/>`).join('')}<circle cx="16" cy="16" r="3" fill="#fff3ee"/></svg>`;
 const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>';
 document.querySelector('#app').innerHTML = `
-<main class="experience" id="experience">
+<main class="experience${familyEdition?' family-edition':''}" id="experience">
   <div class="background-word" aria-hidden="true">bloom</div>
   <button id="flower-hit" class="flower-hit" aria-label="Chạm vào bó hoa để mở rừng hoa"><img class="main-flower" src="/media/pastel-bouquet.webp" width="1086" height="1448" alt="Bó hoa mẫu đơn và hoa hồng pastel, gói giấy hồng nhạt và thắt nơ lụa" fetchpriority="high" decoding="async" /></button>
   <div class="scene-vignette" aria-hidden="true"></div>
   <header class="occasion-header"><span class="nav-date">20 <i>✳</i> 10 <span>VIETNAMESE WOMEN'S DAY</span></span></header>
-  <section class="hero-copy" id="hero-copy" aria-labelledby="headline"><div class="eyebrow"><span></span> 20/10 · GỬI ĐỨA BẠN THÂN CỦA TỚ</div><h1 class="headline" id="headline"><span>Gửi cậu</span><span class="italic">chút hoa,</span><span>thêm chút</span><span class="italic indent">niềm vui.</span></h1><p class="hero-description">Hoa này tớ chọn, niềm vui cậu nhận nhé.<br>Chúc cậu một ngày 20/10 thật vui!</p><button class="bloom-button" id="open-garden">Nhận hoa nè! <span>${arrow}</span></button></section>
-  <div class="flower-label"><span class="label-number">01 /</span><div>BÓ HOA CHO BẠN THÂN<span>Một chút hoa, một chút vui.</span></div><span class="label-line"></span></div>
+  <section class="hero-copy" id="hero-copy" aria-labelledby="headline"><div class="eyebrow"><span></span> ${copy.eyebrow}</div><h1 class="headline" id="headline"><span>${copy.headline[0]}</span><span class="italic">${copy.headline[1]}</span><span>${copy.headline[2]}</span><span class="italic indent">${copy.headline[3]}</span></h1><p class="hero-description">${copy.description}</p><button class="bloom-button" id="open-garden">${copy.button} <span>${arrow}</span></button></section>
+  <div class="flower-label"><span class="label-number">01 /</span><div>${copy.label}<span>${copy.labelNote}</span></div><span class="label-line"></span></div>
   <button class="bloom-hint" id="bloom-hint"><span class="hint-circle">${flowerIcon}<span>+</span></span><span>Chạm nhẹ vào hoa<br><b>còn bất ngờ nữa nè!</b></span></button>
-  <div class="side-caption">JUST FOR MY BESTIE — 20.10</div>
-  <section class="garden-copy" id="garden-copy" aria-labelledby="garden-title" hidden><div class="eyebrow">HOA CHO CẬU, NIỀM VUI NHÂN ĐÔI</div><h2 id="garden-title" tabindex="-1">Cứ rạng rỡ,<br><em>theo cách của cậu.</em></h2><p>Chúc cậu bớt deadline, thêm nhiều niềm vui,<br>ăn ngon, ngủ đủ và cứ tự tin làm điều mình thích.</p><span class="signature">20/10 vui vẻ nha, bạn thân! ✿</span></section>
+  <div class="side-caption">${copy.sideCaption}</div>
+  <section class="garden-copy" id="garden-copy" aria-labelledby="garden-title" hidden><div class="eyebrow">${copy.gardenEyebrow}</div><h2 id="garden-title" tabindex="-1">${copy.gardenTitle}</h2><p>${copy.gardenWish}</p><span class="signature">${copy.signature}</span></section>
   <div class="garden-controls" id="garden-controls" hidden><button class="bloom-button" id="more-flowers">Thêm hoa cho vui <span>＋</span></button><button class="text-button" data-action="home">← Trở về bó hoa</button></div>
-  <footer><span class="footer-center">CẢM ƠN VÌ ĐÃ LÀ BẠN THÂN CỦA TỚ ✿</span><button class="sound-button" id="sound" aria-pressed="false" aria-label="Bật nhạc nền"><span class="sound-bars"><i></i><i></i><i></i><i></i></span><span id="sound-label">Nhạc nền · 10%</span></button></footer>
+  <footer><span class="footer-center">${copy.footer}</span><button class="sound-button" id="sound" aria-pressed="false" aria-label="Bật nhạc nền"><span class="sound-bars"><i></i><i></i><i></i><i></i></span><span id="sound-label">Nhạc nền · 10%</span></button></footer>
   <div class="extra-flower-bed" id="extra-flower-bed" aria-hidden="true"></div>
   <div class="transition-bloom" aria-hidden="true"></div><div class="sr-only" id="announcement" aria-live="polite"></div>
 </main>`;
@@ -42,7 +80,7 @@ function setGarden(open){
       resetExtras();
       document.querySelector('#open-garden').focus({preventScroll:true});
     }
-    announce(open?'Hoa đã nở. Chúc cậu 20/10 thật vui, bạn thân nhé!':'Trở về bó hoa.');
+    announce(open?copy.announcement:'Trở về bó hoa.');
     experience.classList.remove('is-transitioning');transitionBusy=false;
   },reducedMotion.matches?0:680);
 }
@@ -68,7 +106,7 @@ function startBackgroundMusic(){
   // Audible autoplay may require a real pointer or keyboard gesture.
   if(error.name!=='NotAllowedError'&&error.name!=='AbortError'){
    musicWanted=false;
-   announce('Không thể phát nhạc nền. Cậu thử tải lại trang nhé.');
+   announce(copy.musicError);
   }
  }).finally(syncMusicButton);
 }

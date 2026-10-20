@@ -43,3 +43,13 @@ npm run preview
 ```
 
 Bản build nằm trong `dist/`, bao gồm video và ảnh.
+
+## Phiên bản gia đình
+
+- `https://20th10.io.vn/`: nội dung dành cho bạn thân.
+- `https://giadinh.20th10.io.vn/`: nội dung riêng gửi gia đình.
+- Xem trước bản gia đình trên máy: `http://localhost:5173/giadinh.html`.
+
+Hai bản dùng chung ảnh, video, nhạc và hiệu ứng. `vite.config.js` build cả `index.html` và `giadinh.html`; `vercel.json` chuyển yêu cầu `/` trên đúng hostname `giadinh.20th10.io.vn` sang HTML gia đình, giữ nguyên địa chỉ trên trình duyệt. Trang gia đình có tiêu đề và mô tả riêng ngay trong HTML.
+
+Để kích hoạt subdomain, thêm `giadinh.20th10.io.vn` vào mục Domains của cùng project Vercel, chọn Production và không chuyển hướng sang domain chính. Tại TenTen, thêm bản ghi DNS với tên `giadinh`, loại và giá trị đúng như Vercel hiển thị cho subdomain. Sau khi DNS cập nhật, Vercel cấp chứng chỉ HTTPS tự động.
