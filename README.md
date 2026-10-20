@@ -50,6 +50,13 @@ Bản build nằm trong `dist/`, bao gồm video và ảnh.
 - `https://giadinh.20th10.io.vn/`: nội dung riêng gửi gia đình.
 - Xem trước bản gia đình trên máy: `http://localhost:5173/giadinh.html`.
 
-Hai bản dùng chung ảnh, video, nhạc và hiệu ứng. `vite.config.js` build cả `index.html` và `giadinh.html`; `vercel.json` chuyển yêu cầu `/` trên đúng hostname `giadinh.20th10.io.vn` sang HTML gia đình, giữ nguyên địa chỉ trên trình duyệt. Trang gia đình có tiêu đề và mô tả riêng ngay trong HTML.
+Hai bản dùng chung ảnh, video, nhạc và hiệu ứng. `vite.config.js` build cả `index.html` và `giadinh.html`; `vercel.json` dùng route theo hostname trước bước kiểm tra file tĩnh để chuyển `/` và `/index.html` trên đúng hostname `giadinh.20th10.io.vn` sang HTML gia đình, giữ nguyên địa chỉ trên trình duyệt. Trang gia đình có tiêu đề và mô tả riêng ngay trong HTML.
 
 Để kích hoạt subdomain, thêm `giadinh.20th10.io.vn` vào mục Domains của cùng project Vercel, chọn Production và không chuyển hướng sang domain chính. Tại TenTen, thêm bản ghi DNS với tên `giadinh`, loại và giá trị đúng như Vercel hiển thị cho subdomain. Sau khi DNS cập nhật, Vercel cấp chứng chỉ HTTPS tự động.
+
+
+## Xem trước khi chia sẻ Zalo
+
+Mỗi bản có `title`, `description`, Open Graph (`og:title`, `og:description`, `og:url`, `og:image`), Twitter Card và canonical riêng trong HTML gốc. Bot chia sẻ không cần chạy JavaScript để nhận được thông tin gia đình. Bản gia đình phải được chọn trước bước `filesystem` trên Vercel, vì `/` có sẵn `index.html` của bản bạn thân.
+
+Kiểm tra bằng cách đọc HTML từ `https://giadinh.20th10.io.vn/`, không chỉ nhìn tiêu đề sau khi trang chạy JavaScript. Sau khi sửa, các thẻ xem trước trong tin nhắn cũ có thể vẫn lưu bản cũ; có thể thử gửi một URL mới như `https://giadinh.20th10.io.vn/?v=giadinh-2`.

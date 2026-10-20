@@ -1,10 +1,18 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "rewrites": [
+  "routes": [
     {
-      "source": "/",
-      "has": [{ "type": "host", "value": "giadinh.20th10.io.vn" }],
-      "destination": "/giadinh.html"
+      "src": "^/(?:index\\.html)?$",
+      "has": [
+        {
+          "type": "host",
+          "value": "^giadinh\\.20th10\\.io\\.vn$"
+        }
+      ],
+      "dest": "/giadinh.html"
+    },
+    {
+      "handle": "filesystem"
     }
   ]
 }
