@@ -35,7 +35,7 @@ npm install
 npm run dev
 ```
 
-Chạm bó hoa hoặc nút nhận quà để mở khu vườn với các bông mẫu đơn riêng lẻ bay ra rồi trôi nhẹ trên màn hình. Nút thêm hoa tạo thêm 4 bông bay từ vị trí bấm kèm cánh hoa và ánh sao bung nhẹ; không nhân bản bó hoa. Hoa bay ra trong khoảng 0,85–1,2 giây và trôi theo chu kỳ 7–11 giây, nhanh hơn bản trước. Hiệu ứng bung được tự dọn sau khi kết thúc. Giới hạn 10 bông trên điện thoại và 16 bông trên máy tính, dừng chuyển động khi tab ẩn và tôn trọng chế độ giảm chuyển động. Có nút thêm hoa, quay lại bó hoa và bật/tắt nhạc nền. Nhạc thử tự phát khi mở trang ở âm lượng 10%; nếu trình duyệt chặn tự phát có tiếng, nhạc bắt đầu sau lần chạm hoặc bấm đầu tiên. Nhạc tạm dừng khi tab ẩn, phát tiếp khi quay lại và tôn trọng việc người dùng đã tắt nhạc.
+Chạm bó hoa hoặc nút nhận quà để mở khu vườn với các bông mẫu đơn riêng lẻ bay ra rồi trôi nhẹ trên màn hình. Nút thêm hoa tạo thêm 4 bông bay từ vị trí bấm kèm cánh hoa và ánh sao bung nhẹ; không nhân bản bó hoa. Hoa bay ra trong khoảng 0,85–1,2 giây và trôi theo chu kỳ 9–14 giây. Hiệu ứng bung được tự dọn sau khi kết thúc. Giới hạn 10 bông trên điện thoại và 16 bông trên máy tính, dừng chuyển động khi tab ẩn và tôn trọng chế độ giảm chuyển động. Có nút thêm hoa, quay lại bó hoa và bật/tắt nhạc nền. Nhạc thử tự phát khi mở trang ở âm lượng 10%; nếu trình duyệt chặn tự phát có tiếng, nhạc bắt đầu sau lần chạm hoặc bấm đầu tiên. Nhạc tạm dừng khi tab ẩn, phát tiếp khi quay lại và tôn trọng việc người dùng đã tắt nhạc.
 
 ```sh
 npm run build

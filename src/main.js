@@ -169,7 +169,7 @@ function animateFlowerDrift(record){
  const safeX=value=>Math.max(-width*.28,Math.min(innerWidth-width*.72,value));
  const safeY=value=>Math.max(64-height*.12,Math.min(innerHeight-height*.65-55,value));
  const path=[[x,y,rotation],[x+amplitude,y-55,rotation+14],[x-amplitude*.35,y-105,rotation-11],[x-amplitude*.85,y+25,rotation+9],[x,y,rotation]];
- const animation=node.animate(path.map(([px,py,r])=>({transform:`translate3d(${safeX(px)}px,${safeY(py)}px,0) rotate(${r}deg)`,opacity:record.opacity})),{duration:7000+Math.random()*4000,iterations:Infinity,easing:'ease-in-out'});
+ const animation=node.animate(path.map(([px,py,r])=>({transform:`translate3d(${safeX(px)}px,${safeY(py)}px,0) rotate(${r}deg)`,opacity:record.opacity})),{duration:9000+Math.random()*5000,iterations:Infinity,easing:'ease-in-out'});
  if(document.hidden)animation.pause();
 }
 function spawnFloatingFlowers(count,origin=null,immediate=false){
