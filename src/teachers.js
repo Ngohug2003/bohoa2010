@@ -153,7 +153,6 @@ function makeFlowers() {
       : [[.12,.48],[.28,.72],[.43,.60],[.59,.75],[.76,.47],[.9,.72]];
   const lanes = landscape ? [.55,.9,.72,.6,.85,.75] : [.12,.86,.3,.72,.43,.6];
   const duration = 9000;
-  const entryOffset = 600 / duration;
   letters.forEach((letter, index) => {
     const width = landscape ? Math.min(76, innerWidth * .1, innerHeight * .2)
       : mobile ? Math.min(108, innerWidth * .26) : Math.min(168, innerWidth * .13);
@@ -203,14 +202,17 @@ function makeFlowers() {
     const sway = mobile || landscape ? 14 : 32;
     const rotation = index % 2 ? 9 : -10;
     const startY = -height - 24;
-    const frames = Array.from({ length: 9 }, (_, step) => {
-      const progress = step === 0 ? 0 : (step - 1) / 7;
+    const distance = innerHeight + height + 48;
+    // Uniform vertical speed from above the screen to below it; only the
+    // horizontal sway and rotation vary gently, with no separate entrance rush.
+    const frames = Array.from({ length: 33 }, (_, step) => {
+      const progress = step / 32;
       const wave = Math.sin(progress * Math.PI * 2);
       return {
-        offset: step === 0 ? 0 : entryOffset + (1 - entryOffset) * progress,
-        transform: `translate3d(${wave * sway}px,${step === 0 ? startY : 12 + (innerHeight + 28) * progress}px,0) rotate(${rotation + wave * 12}deg)`,
-        opacity: step === 0 || step === 8 ? 0 : .96,
-        easing: step === 0 ? 'cubic-bezier(.15,.65,.3,1)' : 'linear',
+        offset: progress,
+        transform: `translate3d(${wave * sway}px,${startY + distance * progress}px,0) rotate(${rotation + wave * 8}deg)`,
+        opacity: step === 0 || step === 32 ? 0 : .96,
+        easing: 'linear',
       };
     });
     // Every flower begins entirely above the screen. The same delay and duration
