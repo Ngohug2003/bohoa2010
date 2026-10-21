@@ -258,6 +258,7 @@ main {
 }
 
 .bouquet-orbit {
+  translate:-38px 0;
   position:absolute;
   inset:5% 0 10%;
   border:1px solid #f3ddb638;
@@ -274,6 +275,7 @@ main {
 }
 
 .bouquet-button {
+  translate:-54px 0;
   position:relative;
   display:block;
   width:120%;
@@ -313,6 +315,7 @@ main {
 }
 
 .bouquet-caption {
+  margin-left:-38px;
   position:absolute;
   bottom:0;
   left:50%;
@@ -425,12 +428,6 @@ main {
 
 .primary-button {
   animation-delay:.4s;
-}
-
-.letter-scene {
-  width:100%;
-  padding:38px 0 8px;
-  position:relative;
 }
 
 .letter-paper {
@@ -585,13 +582,6 @@ main {
   text-underline-offset:4px;
 }
 
-.letter-footnote {
-  text-align:center;
-  font:italic 21px var(--serif);
-  color:#f6e8cc;
-  margin:22px 0 10px;
-}
-
 .is-letter .edition {
   opacity:.65;
 }
@@ -740,9 +730,11 @@ main {
 
 @media(max-width:1050px) {
   .bouquet-button {
+    translate:-12px 0;
     width:105%;
   }
   .bouquet-orbit {
+    translate:-12px 0;
     inset:8% 8% 13%;
     transform:rotate(-9deg);
   }
@@ -771,6 +763,7 @@ main {
     max-width:330px;
   }
   .bouquet-caption {
+    margin-left:-12px;
     letter-spacing:.9px;
     font-size:6px;
   }
@@ -916,9 +909,6 @@ main {
   .classroom {
     background-position:65% center;
   }
-  .letter-scene {
-    padding-top:27px;
-  }
   .letter-paper {
     padding:23px 25px 25px;
   }
@@ -959,14 +949,8 @@ main {
   .back-button {
     font-size:9px;
   }
-  .letter-footnote {
-    font-size:18px;
-  }
   .letter-signature em {
     font-size:23px;
-  }
-  .is-letter .page-footer {
-    margin-top:13px;
   }
   .letter-paper::before {
     inset:6px;
@@ -1020,9 +1004,6 @@ main {
   .bouquet-button img {
     max-height:440px;
   }
-  .letter-scene {
-    padding-top:24px;
-  }
   .letter-paper h2 {
     font-size:48px;
   }
@@ -1039,5 +1020,264 @@ main {
   .bouquet-button,.hero-copy>* {
     opacity:1;
     transform:none;
+  }
+}
+
+/* The bouquet opens an interactive garden; each flower carries its own letter. */
+body.is-garden {
+  overflow:hidden;
+}
+
+.garden-scene {
+  position:fixed;
+  inset:0;
+  z-index:0;
+  isolation:isolate;
+}
+
+.is-garden .classroom::after {
+  background:linear-gradient(180deg,#16382ad9 0%,#1b3a2dc4 30%,#1d3e2a66 66%,#132e25b5);
+}
+
+.garden-copy {
+  position:absolute;
+  top:13%;
+  left:50%;
+  translate:-50% 0;
+  width:min(700px,90%);
+  text-align:center;
+  pointer-events:none;
+  z-index:2;
+  animation:rise-in .9s both;
+}
+
+.garden-copy .eyebrow {
+  justify-content:center;
+  margin-bottom:16px;
+}
+
+.garden-copy h2 {
+  font:500 clamp(48px,5.2vw,78px)/1.02 var(--serif);
+  letter-spacing:-.035em;
+  margin:0 0 18px;
+}
+
+.garden-copy h2:focus {
+  outline:none;
+}
+
+.garden-copy h2 em {
+  color:var(--gold);
+  font-weight:400;
+}
+
+.garden-copy>p:last-child {
+  font-size:11px;
+  line-height:1.9;
+  color:#f8efd9;
+  margin:0;
+}
+
+.letter-flower-bed {
+  position:absolute;
+  inset:0;
+  z-index:1;
+}
+
+.letter-flower {
+  position:absolute;
+  background:none;
+  padding:0;
+  border-radius:45%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-end;
+  will-change:transform;
+  transform-origin:50% 65%;
+  touch-action:manipulation;
+}
+
+.letter-flower img {
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  filter:drop-shadow(3px 9px 9px #0e2e2350);
+  transition:scale .25s;
+  pointer-events:none;
+}
+
+.letter-flower:hover img,.letter-flower:focus-visible img {
+  scale:1.07;
+}
+
+.garden-controls {
+  position:absolute;
+  bottom:76px;
+  left:50%;
+  translate:-50% 0;
+  display:flex;
+  align-items:center;
+  gap:22px;
+  width:max-content;
+  max-width:calc(100% - 32px);
+  z-index:3;
+}
+
+.garden-controls .wish-button {
+  background:var(--cream);
+  color:var(--green);
+  box-shadow:0 6px 24px #0e2c2526;
+}
+
+.garden-controls .wish-button>span {
+  color:#967735;
+}
+
+.garden-back {
+  font-size:10px;
+  padding:12px 0;
+  min-height:44px;
+  background:none;
+  color:var(--cream);
+}
+
+.garden-back:hover {
+  text-decoration:underline;
+  text-underline-offset:4px;
+}
+
+.letter-dialog {
+  position:fixed;
+  inset:0;
+  margin:auto;
+  width:min(760px,calc(100% - 36px));
+  max-width:none;
+  max-height:calc(100dvh - 40px);
+  border:0;
+  padding:0;
+  background:transparent;
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:#b9a269 #fcf6e8;
+  border-radius:3px;
+}
+
+.letter-dialog::backdrop {
+  background:#0e261ed9;
+  animation:backdrop-in .3s both;
+}
+
+.letter-dialog .letter-paper {
+  box-shadow:none;
+}
+
+.letter-dialog .letter-top {
+  position:relative;
+  padding-right:28px;
+  gap:12px;
+}
+
+.close-letter {
+  position:absolute;
+  top:-14px;
+  right:-17px;
+  width:44px;
+  height:44px;
+  display:grid;
+  place-items:center;
+  color:#53694d;
+  background:none;
+  font:28px/1 var(--serif);
+  border-radius:50%;
+  z-index:2;
+}
+
+.close-letter:hover {
+  background:#c7b88b29;
+}
+
+@keyframes backdrop-in {
+  from { opacity:0; }
+  to { opacity:1; }
+}
+
+@media(max-width:720px) {
+  .garden-copy {
+    top:13%;
+    width:94%;
+  }
+  .garden-copy .eyebrow {
+    font-size:7px;
+    letter-spacing:1.3px;
+    margin-bottom:14px;
+  }
+  .garden-copy h2 {
+    font-size:clamp(40px,10.7vw,58px);
+    margin-bottom:14px;
+  }
+  .garden-copy>p:last-child {
+    font-size:9px;
+    line-height:1.85;
+  }
+  .letter-flower img {
+    height:100%;
+    filter:drop-shadow(2px 5px 5px #0e2e2333);
+  }
+  .garden-controls {
+    gap:16px;
+    bottom:66px;
+  }
+  .garden-back {
+    font-size:9px;
+  }
+  .letter-dialog {
+    width:calc(100% - 28px);
+    max-height:calc(100dvh - 28px);
+  }
+  .letter-dialog .letter-actions {
+    flex-wrap:wrap;
+  }
+}
+
+@media(max-width:720px) and (max-height:620px) {
+  .garden-copy { top:13%; }
+  .garden-copy h2 { font-size:36px; margin-bottom:10px; }
+  .garden-copy .eyebrow { margin-bottom:10px; font-size:6px; }
+  .garden-copy>p:last-child { font-size:8px; }
+}
+
+@media(max-height:600px) and (orientation:landscape) {
+  .garden-copy {
+    left:5%;
+    top:27%;
+    translate:0;
+    width:34%;
+    text-align:left;
+  }
+  .garden-copy .eyebrow {
+    justify-content:flex-start;
+    font-size:6px;
+    letter-spacing:1px;
+    margin-bottom:12px;
+  }
+  .garden-copy h2 {
+    font-size:clamp(28px,4.8vw,40px);
+    margin-bottom:14px;
+  }
+  .garden-copy>p:last-child {
+    font-size:8px;
+  }
+  .garden-controls {
+    left:5%;
+    bottom:55px;
+    translate:0;
+    gap:12px;
+  }
+  .garden-controls .wish-button,.garden-back {
+    font-size:8px;
   }
 }

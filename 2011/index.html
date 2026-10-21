@@ -45,35 +45,43 @@
             <p class="eyebrow"><span></span> GỬI NHỮNG NGƯỜI GIEO MẦM</p>
             <h1 id="hero-title">Một đời<br><em>gieo chữ,</em><br> ngàn mùa <em>nở hoa.</em></h1>
             <p class="hero-description">Có những bài học đi cùng ta năm tháng. Có những người, ta luôn nhớ bằng cả lòng biết ơn.</p>
-            <button class="primary-button" id="open-letter">Gửi thầy cô một lời cảm ơn <span aria-hidden="true">↗</span></button>
+            <button class="primary-button" id="open-letter">Gửi thầy cô một vườn hoa <span aria-hidden="true">↗</span></button>
           </div>
           <div class="bouquet-stage">
             <div class="bouquet-orbit" aria-hidden="true"></div>
             <span class="bouquet-number" aria-hidden="true">Một mùa<br><em>tri ân.</em></span>
-            <button class="bouquet-button" id="bouquet" aria-label="Chạm vào bó hoa để mở lá thư tri ân thầy cô">
+            <button class="bouquet-button" id="bouquet" aria-label="Chạm vào bó hoa để mở vườn hoa tri ân thầy cô">
               <img src="/media/teachers/teachers-bouquet.webp" width="1000" height="1500" alt="Bó hoa cúc trắng, hoa hồng kem và hoa vàng, gói giấy kem với nơ xanh gửi tặng thầy cô" fetchpriority="high" decoding="async" />
             </button>
             <span class="bouquet-caption"><span class="caption-rule"></span> MỘT BÓ HOA NHỎ · NGÀN LỜI CẢM ƠN</span>
-            <span class="touch-hint" aria-hidden="true">Chạm vào hoa, mở lời muốn nói <span>↗</span></span>
+            <span class="touch-hint" aria-hidden="true">Chạm vào bó hoa, mở một vườn hoa <span>↗</span></span>
           </div>
         </section>
-        <section class="letter-scene" id="letter-scene" aria-labelledby="letter-title" hidden>
-          <article class="letter-paper">
-            <div class="letter-top"><span>THƯ GỬI THẦY CÔ</span><span>20 / 11</span></div>
-            <span class="paper-flower" aria-hidden="true">✳</span>
-            <h2 id="letter-title" tabindex="-1">Cảm ơn thầy cô,<br><em>vì những mùa xanh.</em></h2>
-            <p class="salutation">Thầy cô kính mến,</p>
-            <p>Có những điều ngày ấy chúng em chưa kịp hiểu, để rồi khi lớn lên mới nhận ra: đằng sau mỗi bài giảng là biết bao kiên nhẫn, yêu thương và niềm tin thầy cô dành cho chúng em.</p>
-            <p>Cảm ơn thầy cô đã dạy chúng em biết nghĩ, biết ước mơ, và biết vững vàng bước tiếp — cả khi đã rời xa mái trường.</p>
-            <div class="wish" aria-live="polite" aria-atomic="true"><p id="wish-text">Nhân ngày 20/11, kính chúc thầy cô luôn mạnh khỏe, bình an và hạnh phúc. Mong mỗi ngày đến lớp vẫn là một ngày đầy niềm vui.</p></div>
-            <p class="letter-signature">Với tất cả lòng biết ơn,<br><em>Một người học trò.</em></p>
-            <div class="letter-actions"><button class="wish-button" id="another-wish">Thêm một lời chúc <span aria-hidden="true">✳</span></button><button class="back-button" id="back">← Trở về bó hoa</button></div>
-          </article>
-          <p class="letter-footnote">Dẫu đi qua bao mùa, lòng biết ơn vẫn ở lại.</p>
+        <section class="garden-scene" id="garden-scene" aria-labelledby="garden-title" hidden>
+          <div class="garden-copy">
+            <p class="eyebrow">20 / 11 · MỘT VƯỜN HOA TRI ÂN</p>
+            <h2 id="garden-title" tabindex="-1">Ngàn hoa nở,<br><em>ngàn lời biết ơn.</em></h2>
+            <p>Mỗi bông hoa giữ một lời muốn nói.<br>Chạm vào từng bông để mở một bức thư riêng.</p>
+          </div>
+          <div class="letter-flower-bed" id="letter-flower-bed" role="group" aria-label="Sáu bông hoa, mỗi bông mở một bức thư tri ân"></div>
+          <div class="garden-controls"><button class="wish-button" id="replay-flowers">Cho hoa bay lại <span aria-hidden="true">✳</span></button><button class="garden-back" id="back">← Trở về bó hoa</button></div>
         </section>
       </main>
       <footer class="page-footer"><span class="footer-message">TRÂN TRỌNG TỪNG BÀI HỌC. BIẾT ƠN TỪNG NGƯỜI THẦY.</span><button class="sound-button" id="sound" aria-pressed="false" aria-label="Bật nhạc nền ở âm lượng 10%"><span class="sound-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span id="sound-label">Bật nhạc · 10%</span></button></footer>
     </div>
+    <dialog class="letter-dialog" id="letter-dialog" aria-labelledby="letter-title">
+      <article class="letter-paper">
+        <div class="letter-top"><span id="letter-counter">BỨC THƯ 01 / 06</span><span>20 / 11</span><button class="close-letter" id="close-letter" aria-label="Đóng thư, trở về vườn hoa">×</button></div>
+        <span class="paper-flower" aria-hidden="true">✳</span>
+        <h2 id="letter-title" tabindex="-1"></h2>
+        <p class="salutation">Thầy cô kính mến,</p>
+        <p id="letter-paragraph-one"></p>
+        <p id="letter-paragraph-two"></p>
+        <div class="wish"><p id="wish-text"></p></div>
+        <p class="letter-signature">Với tất cả lòng biết ơn,<br><em>Một người học trò.</em></p>
+        <div class="letter-actions"><button class="wish-button" id="next-letter">Bức thư tiếp theo <span aria-hidden="true">→</span></button><button class="back-button" id="return-garden">← Trở về vườn hoa</button></div>
+      </article>
+    </dialog>
     <audio id="music" loop preload="none" src="/media/good-morning.mp3"></audio>
     <div class="sr-only" id="announcement" role="status"></div>
     <script type="module" src="/src/teachers.js"></script>

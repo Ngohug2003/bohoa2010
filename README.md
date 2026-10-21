@@ -65,11 +65,12 @@ Kiểm tra bằng cách đọc HTML từ `https://giadinh.20th10.io.vn/`, không
 
 Trang riêng tại `https://20th10.io.vn/2011` (xem local ở `/2011/`). Nội dung HTML, CSS và JavaScript riêng trong `2011/index.html`, `src/teachers.css`, `src/teachers.js`. Vite build thêm entry này; Vercel route `/2011` và `/2011/` sang `/2011/index.html` trước bước filesystem, trên cả domain chính và subdomain. Các trang 20/10 giữ nguyên.
 
-Phong cách bảng xanh, kem và vàng nắng. Bấm bó hoa hoặc nút gửi lời cảm ơn để mở thư tri ân, có bốn lời chúc luân phiên và cánh hoa bay. Hiệu ứng giới hạn 10 cánh trên mobile, 16 trên desktop; tắt chuyển động và video khi chọn giảm chuyển động, tạm dừng khi tab ẩn. Nhạc dùng lại MP3 được cung cấp, âm lượng 10%, thử tự phát và phát sau tương tác nếu trình duyệt chặn.
+Phong cách bảng xanh, kem và vàng nắng. Bấm bó hoa hoặc nút gửi hoa để mở màn 2 với sáu bông cúc riêng lẻ bay ra rồi trôi nhẹ. Hoa không hiển thị nhãn chữ bên dưới. Chạm từng bông để mở một bức thư khác nhau: lòng biết ơn, niềm tin, bài học, sức khỏe, nhiệt huyết và bình an. Có nút đọc thư tiếp, đóng thư, bay hoa lại và trở về bó hoa. Hoa dừng khi rê chuột, nhận focus hoặc khi đang mở thư; hộp thư hỗ trợ Escape, giữ focus bên trong và trả focus về hoa khi đóng. Bó hoa màn đầu dịch trái 54px trên desktop, 12px ở màn nhỏ. Hiệu ứng giới hạn 10 cánh trên mobile, 16 trên desktop; tắt chuyển động và video khi chọn giảm chuyển động, tạm dừng khi tab ẩn. Nhạc dùng lại MP3 được cung cấp, âm lượng 10%, thử tự phát và phát sau tương tác nếu trình duyệt chặn.
 
 Tài nguyên mới lưu trong `public/media/teachers/`:
 
 - `teachers-bouquet.webp`: bó hoa cúc trắng, hồng kem và cosmos vàng, nơ xanh; WebP trong suốt 1000×1500.
+- `teachers-single-flower.webp`: bông cúc trắng riêng lẻ tạo mới bằng imagegen tích hợp, WebP trong suốt 380×570, dùng cho các bông hoa mang thư ở màn 2.
 - `classroom-poster.jpg`: ảnh lớp học 1920×1080 làm nền dự phòng.
 - `classroom.mp4`: video nền H.264 Full HD, 24 fps, 12 giây, không âm thanh, lặp.
 - `classroom-mobile.mp4`: bản video 1280×720 cho điện thoại.
@@ -87,3 +88,7 @@ Prompt bó hoa (yêu cầu nền trong suốt):
 > Create one exquisite complete florist bouquet as a premium isolated product photograph on transparent background, upright full bouquet including stems and wrapping entirely visible with generous transparent margin. Vietnamese Teachers' Day 20 November gift: white chrysanthemums, ivory garden roses, delicate pale yellow cosmos and small white daisies, a few airy sage eucalyptus sprigs, subtle fresh green foliage. Beautiful naturally asymmetrical abundant floral arrangement, wrapped in elegant cream paper with a dark forest green silk ribbon tied in a refined bow, a tiny blank ivory gift card with no writing. Soft warm studio light, highly realistic detailed petals, editorial luxury florist photography, restrained ivory sage honey gold color palette, absolutely no pink flowers. Front three-quarter view, centered, portrait composition, no vase, no floor, no shadow backdrop, no text, no watermark.
 
 Ảnh chia sẻ được dựng từ bố cục thật của trang để đúng nội dung, không cần bot Zalo chạy JavaScript. HTML gốc có canonical, Open Graph và Twitter Card riêng cho 20/11.
+
+Prompt tạo bông hoa mang thư (imagegen tích hợp, nền trong suốt):
+
+> Use case: product-mockup. Asset: one isolated flower cutout for an elegant Vietnamese Teachers’ Day website. A single beautiful large ivory white chrysanthemum bloom seen front three-quarter view, fluffy abundant naturally layered realistic petals with a soft pale yellow center, one short graceful green stem and two small sage leaves, the entire flower and stem fully visible centered with generous clear margin. Delicate warm studio lighting, premium macro florist photography, warm ivory sage honey yellow palette. Truly transparent background, no wrapping, no bouquet, no vase, no card, no text, no border, no watermark, no other flowers. Portrait composition, suitable for floating interactive flowers on screen.
