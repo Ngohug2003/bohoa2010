@@ -10,6 +10,9 @@ let gardenOpen = false;
 let letterIndex = 0;
 const dialog = $('#letter-dialog');
 const flowers = new Set();
+const resumedAfterLetter = new WeakSet();
+const hoverPointer = matchMedia('(hover: hover) and (pointer: fine)');
+let restoringFlowerFocus = false;
 const letters = [
   {
     label: 'Lòng biết ơn', title: ['Cảm ơn thầy cô,', 'vì những mùa xanh.'],
@@ -122,7 +125,9 @@ function makePetals() {
 
 function syncFlowers() {
   flowers.forEach(node => {
-    const paused = document.hidden || dialog.open || reducedMotion.matches || node.matches(':hover, :focus-within');
+    const interactionPaused = !resumedAfterLetter.has(node)
+      && (node.matches(':focus-visible') || (hoverPointer.matches && node.matches(':hover')));
+    const paused = document.hidden || dialog.open || reducedMotion.matches || interactionPaused;
     node.getAnimations().forEach(animation => paused ? animation.pause() : animation.play());
   });
 }
@@ -147,7 +152,8 @@ function makeFlowers() {
         : [[.16,.49],[.5,.47],[.83,.5],[.18,.70],[.51,.71],[.83,.70]])
       : [[.12,.48],[.28,.72],[.43,.60],[.59,.75],[.76,.47],[.9,.72]];
   const lanes = landscape ? [.55,.9,.72,.6,.85,.75] : [.12,.86,.3,.72,.43,.6];
-  const duration = 15000;
+  const duration = 9000;
+  const entryOffset = 600 / duration;
   letters.forEach((letter, index) => {
     const width = landscape ? Math.min(76, innerWidth * .1, innerHeight * .2)
       : mobile ? Math.min(108, innerWidth * .26) : Math.min(168, innerWidth * .13);
@@ -167,11 +173,21 @@ function makeFlowers() {
     node.append(image);
     $('#letter-flower-bed').append(node); flowers.add(node);
     node.addEventListener('click', () => openLetter(index));
-    ['pointerenter', 'pointerleave', 'blur'].forEach(event => node.addEventListener(event, syncFlowers));
+    node.addEventListener('pointerenter', syncFlowers);
+    node.addEventListener('pointerleave', () => {
+      if (document.activeElement !== node) resumedAfterLetter.delete(node);
+      syncFlowers();
+    });
+    node.addEventListener('blur', () => {
+      resumedAfterLetter.delete(node);
+      syncFlowers();
+    });
     node.addEventListener('focus', () => {
+      if (!restoringFlowerFocus) resumedAfterLetter.delete(node);
       // Keyboard users can reach a letter even while its flower is above/below the screen.
       const bounds = node.getBoundingClientRect();
-      if (bounds.bottom < 80 || bounds.top > innerHeight - 90) {
+      if (!restoringFlowerFocus && node.matches(':focus-visible')
+        && (bounds.top < 80 || bounds.bottom > innerHeight - 90)) {
         node.getAnimations().forEach(animation => {
           animation.currentTime = animation.effect.getTiming().delay + duration * .5;
         });
@@ -186,21 +202,21 @@ function makeFlowers() {
     }
     const sway = mobile || landscape ? 14 : 32;
     const rotation = index % 2 ? 9 : -10;
-    const startY = -height - 40;
-    const distance = innerHeight + height + 80;
+    const startY = -height - 24;
     const frames = Array.from({ length: 9 }, (_, step) => {
-      const progress = step / 8;
+      const progress = step === 0 ? 0 : (step - 1) / 7;
       const wave = Math.sin(progress * Math.PI * 2);
       return {
-        offset: progress,
-        transform: `translate3d(${wave * sway}px,${startY + distance * progress}px,0) rotate(${rotation + wave * 12}deg)`,
+        offset: step === 0 ? 0 : entryOffset + (1 - entryOffset) * progress,
+        transform: `translate3d(${wave * sway}px,${step === 0 ? startY : 12 + (innerHeight + 28) * progress}px,0) rotate(${rotation + wave * 12}deg)`,
         opacity: step === 0 || step === 8 ? 0 : .96,
+        easing: step === 0 ? 'cubic-bezier(.15,.65,.3,1)' : 'linear',
       };
     });
     // Every flower begins entirely above the screen. The same delay and duration
     // are preserved on later loops, so arrivals stay staggered without JS timers.
     node.animate(frames, {
-      duration, delay: 200 + index * 1800,
+      duration, delay: index * 1500,
       iterations: Infinity, easing: 'linear', fill: 'both',
     });
     syncFlowers();
@@ -247,7 +263,14 @@ $('#next-letter').addEventListener('click', () => openLetter((letterIndex + 1) %
 dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
 dialog.addEventListener('close', () => {
   document.body.classList.remove('is-letter');
-  if (gardenOpen) $(`#flower-letter-${letterIndex}`)?.focus({ preventScroll: true });
+  if (gardenOpen) {
+    const flower = $(`#flower-letter-${letterIndex}`);
+    restoringFlowerFocus = true;
+    flower?.focus({ preventScroll: true });
+    restoringFlowerFocus = false;
+    // Returning focus (or sticky touch hover) must not freeze the flower again.
+    if (flower) resumedAfterLetter.add(flower);
+  }
   syncFlowers();
 });
 let resizeTimer;
