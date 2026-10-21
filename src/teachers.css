@@ -611,15 +611,7 @@ main {
   background:linear-gradient(125deg,#d2dbac,#7e9d68);
 }
 
-.petal-burst {
-  position:fixed;
-  width:12px;
-  height:7px;
-  background:#edda9c;
-  border-radius:80% 5% 80% 5%;
-  pointer-events:none;
-  z-index:5;
-}
+
 
 .sr-only {
   position:absolute;
@@ -1079,12 +1071,14 @@ body.is-garden {
 }
 
 .letter-flower-bed {
+  overflow:hidden;
   position:absolute;
   inset:0;
   z-index:1;
 }
 
 .letter-flower {
+  opacity:0;
   position:absolute;
   background:none;
   padding:0;

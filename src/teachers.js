@@ -120,26 +120,6 @@ function makePetals() {
   $('#petals').append(fragment);
 }
 
-function celebrate(x, y) {
-  if (reducedMotion.matches) return;
-  document.querySelectorAll('.petal-burst').forEach(petal => petal.remove());
-  for (let i = 0; i < 12; i++) {
-    const petal = document.createElement('span');
-    petal.className = 'petal-burst';
-    petal.setAttribute('aria-hidden', 'true');
-    petal.style.left = `${x}px`;
-    petal.style.top = `${y}px`;
-    document.body.append(petal);
-    const angle = i / 12 * Math.PI * 2;
-    const distance = 70 + i % 4 * 35;
-    petal.animate([
-      { transform: 'translate(0,0) rotate(0deg)', opacity: 0 },
-      { opacity: 1, offset: .15 },
-      { transform: `translate(${Math.cos(angle) * distance}px,${Math.sin(angle) * distance + 70}px) rotate(${i * 55}deg)`, opacity: 0 },
-    ], { duration: 1100 + i * 35, easing: 'cubic-bezier(.15,.6,.3,1)' }).finished.then(() => petal.remove()).catch(() => petal.remove());
-  }
-}
-
 function syncFlowers() {
   flowers.forEach(node => {
     const paused = document.hidden || dialog.open || reducedMotion.matches || node.matches(':hover, :focus-within');
@@ -152,59 +132,77 @@ function clearFlowers() {
   flowers.clear();
 }
 
-function makeFlowers(entrance = true) {
+function makeFlowers() {
   clearFlowers();
   if (!gardenOpen) return;
   const landscape = innerWidth > innerHeight && innerHeight < 600;
   const mobile = innerWidth <= 720 && !landscape;
   const shortMobile = mobile && innerHeight < 620;
-  const anchors = landscape
+  // Only the reduced-motion alternative uses a stationary arrangement.
+  const stillAnchors = landscape
     ? [[.54,.36],[.73,.35],[.91,.36],[.54,.7],[.73,.7],[.91,.7]]
     : mobile
       ? (shortMobile
         ? [[.16,.51],[.5,.49],[.83,.52],[.18,.69],[.51,.68],[.83,.69]]
         : [[.16,.49],[.5,.47],[.83,.5],[.18,.70],[.51,.71],[.83,.70]])
       : [[.12,.48],[.28,.72],[.43,.60],[.59,.75],[.76,.47],[.9,.72]];
+  const lanes = landscape ? [.55,.9,.72,.6,.85,.75] : [.12,.86,.3,.72,.43,.6];
+  const duration = 15000;
   letters.forEach((letter, index) => {
-    const width = landscape ? Math.min(76, innerWidth * .1, innerHeight * .16) : mobile ? Math.min(108, innerWidth * .26, (innerHeight - 300) / 3.8) : Math.min(168, innerWidth * .13);
+    const width = landscape ? Math.min(76, innerWidth * .1, innerHeight * .2)
+      : mobile ? Math.min(108, innerWidth * .26) : Math.min(168, innerWidth * .13);
     const height = width * 1.5;
-    const [ax, ay] = anchors[index];
-    const x = Math.max(8, Math.min(innerWidth - width - 8, ax * innerWidth - width / 2));
-    const y = Math.max(100, Math.min(innerHeight - height - 68, ay * innerHeight - height / 2));
+    const lane = reducedMotion.matches ? stillAnchors[index][0] : lanes[index];
+    const x = Math.max(12, Math.min(innerWidth - width - 12, lane * innerWidth - width / 2));
     const node = document.createElement('button');
     node.className = 'letter-flower';
     node.id = `flower-letter-${index}`;
     node.setAttribute('aria-label', `Mở bức thư ${index + 1}: ${letter.label}`);
     node.setAttribute('aria-haspopup', 'dialog');
     node.setAttribute('aria-controls', 'letter-dialog');
-    node.style.cssText = `left:${x}px;top:${y}px;width:${width}px;height:${height}px;`;
+    node.style.cssText = `left:${x}px;top:0;width:${width}px;height:${height}px;`;
     const image = new Image();
     image.src = '/media/teachers/teachers-single-flower.webp';
     image.alt = ''; image.draggable = false; image.decoding = 'async';
     node.append(image);
     $('#letter-flower-bed').append(node); flowers.add(node);
     node.addEventListener('click', () => openLetter(index));
-    ['pointerenter', 'pointerleave', 'focus', 'blur'].forEach(event => node.addEventListener(event, syncFlowers));
-    if (reducedMotion.matches) return;
-    const rotation = index % 2 ? 8 : -9;
-    const drift = () => {
-      if (!node.isConnected) return;
-      const sway = mobile || landscape ? 10 : 24;
-      const fall = landscape ? 6 : shortMobile ? 8 : mobile ? 15 : 36;
-      node.animate([
-        { transform: `translate3d(0,${-fall}px,0) rotate(${rotation}deg)` },
-        { transform: `translate3d(${sway}px,${fall}px,0) rotate(${rotation + 9}deg)` },
-        { transform: `translate3d(${-sway}px,0,0) rotate(${rotation - 7}deg)` },
-        { transform: `translate3d(0,${-fall}px,0) rotate(${rotation}deg)` },
-      ], { duration: 10000 + index * 650, iterations: Infinity, easing: 'ease-in-out' });
+    ['pointerenter', 'pointerleave', 'blur'].forEach(event => node.addEventListener(event, syncFlowers));
+    node.addEventListener('focus', () => {
+      // Keyboard users can reach a letter even while its flower is above/below the screen.
+      const bounds = node.getBoundingClientRect();
+      if (bounds.bottom < 80 || bounds.top > innerHeight - 90) {
+        node.getAnimations().forEach(animation => {
+          animation.currentTime = animation.effect.getTiming().delay + duration * .5;
+        });
+      }
       syncFlowers();
-    };
-    if (!entrance) { drift(); return; }
-    const animation = node.animate([
-      { transform: `translate3d(${innerWidth * .53 - x - width / 2}px,${innerHeight * .63 - y - height / 2}px,0) scale(.12) rotate(-28deg)`, opacity: 0 },
-      { transform: `translate3d(0,${- (landscape ? 6 : shortMobile ? 8 : mobile ? 15 : 36)}px,0) scale(1) rotate(${rotation}deg)`, opacity: 1 },
-    ], { duration: 850 + index * 55, delay: index * 55, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'backwards' });
-    animation.finished.then(drift).catch(() => {});
+    });
+    if (reducedMotion.matches) {
+      const y = Math.max(100, Math.min(innerHeight - height - 68, stillAnchors[index][1] * innerHeight - height / 2));
+      node.style.top = `${y}px`;
+      node.style.opacity = '1';
+      return;
+    }
+    const sway = mobile || landscape ? 14 : 32;
+    const rotation = index % 2 ? 9 : -10;
+    const startY = -height - 40;
+    const distance = innerHeight + height + 80;
+    const frames = Array.from({ length: 9 }, (_, step) => {
+      const progress = step / 8;
+      const wave = Math.sin(progress * Math.PI * 2);
+      return {
+        offset: progress,
+        transform: `translate3d(${wave * sway}px,${startY + distance * progress}px,0) rotate(${rotation + wave * 12}deg)`,
+        opacity: step === 0 || step === 8 ? 0 : .96,
+      };
+    });
+    // Every flower begins entirely above the screen. The same delay and duration
+    // are preserved on later loops, so arrivals stay staggered without JS timers.
+    node.animate(frames, {
+      duration, delay: 200 + index * 1800,
+      iterations: Infinity, easing: 'linear', fill: 'both',
+    });
     syncFlowers();
   });
 }
@@ -218,8 +216,7 @@ function showGarden(open) {
   makePetals(); makeFlowers();
   window.scrollTo({ top: 0, behavior: 'instant' });
   (open ? $('#garden-title') : $('#open-letter')).focus({ preventScroll: true });
-  $('#announcement').textContent = open ? 'Vườn hoa đã mở. Chạm vào từng bông hoa để đọc một bức thư tri ân riêng.' : 'Trở về bó hoa tri ân thầy cô.';
-  if (open) celebrate(innerWidth * .53, innerHeight * .63);
+  $('#announcement').textContent = open ? 'Hoa đang lần lượt rơi từ trên xuống. Chạm vào từng bông hoa để đọc một bức thư riêng.' : 'Trở về bó hoa tri ân thầy cô.';
 }
 
 function openLetter(index) {
@@ -242,8 +239,8 @@ $('#open-letter').addEventListener('click', () => showGarden(true));
 $('#bouquet').addEventListener('click', () => showGarden(true));
 $('#back').addEventListener('click', () => showGarden(false));
 $('#replay-flowers').addEventListener('click', () => {
-  makeFlowers(); celebrate(innerWidth * .53, innerHeight * .63);
-  $('#announcement').textContent = 'Sáu bông hoa đang bay ra, mỗi bông giữ một bức thư riêng.';
+  makeFlowers();
+  $('#announcement').textContent = 'Hoa bắt đầu rơi lại lần lượt từ trên xuống, mỗi bông giữ một bức thư riêng.';
 });
 $('#next-letter').addEventListener('click', () => openLetter((letterIndex + 1) % letters.length));
 ['close-letter', 'return-garden'].forEach(id => $(`#${id}`).addEventListener('click', () => dialog.close()));
@@ -256,7 +253,7 @@ dialog.addEventListener('close', () => {
 let resizeTimer;
 addEventListener('resize', () => {
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => makeFlowers(false), 160);
+  resizeTimer = setTimeout(() => makeFlowers(), 160);
 });
 document.addEventListener('visibilitychange', () => {
   document.body.classList.toggle('is-hidden-tab', document.hidden);
@@ -264,6 +261,6 @@ document.addEventListener('visibilitychange', () => {
   if (document.hidden) music.pause();
   else playMusic();
 });
-reducedMotion.addEventListener('change', () => { syncVideo(); makePetals(); makeFlowers(false); });
+reducedMotion.addEventListener('change', () => { syncVideo(); makePetals(); makeFlowers(); });
 syncVideo();
 playMusic();
