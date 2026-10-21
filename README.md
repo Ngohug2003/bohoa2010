@@ -60,3 +60,30 @@ Hai bản dùng chung ảnh, video, nhạc và hiệu ứng. `vite.config.js` bu
 Mỗi bản có `title`, `description`, Open Graph (`og:title`, `og:description`, `og:url`, `og:image`), Twitter Card và canonical riêng trong HTML gốc. Bot chia sẻ không cần chạy JavaScript để nhận được thông tin gia đình. Bản gia đình phải được chọn trước bước `filesystem` trên Vercel, vì `/` có sẵn `index.html` của bản bạn thân.
 
 Kiểm tra bằng cách đọc HTML từ `https://giadinh.20th10.io.vn/`, không chỉ nhìn tiêu đề sau khi trang chạy JavaScript. Sau khi sửa, các thẻ xem trước trong tin nhắn cũ có thể vẫn lưu bản cũ; có thể thử gửi một URL mới như `https://giadinh.20th10.io.vn/?v=giadinh-2`.
+
+## Trang Nhà giáo Việt Nam — `/2011`
+
+Trang riêng tại `https://20th10.io.vn/2011` (xem local ở `/2011/`). Nội dung HTML, CSS và JavaScript riêng trong `2011/index.html`, `src/teachers.css`, `src/teachers.js`. Vite build thêm entry này; Vercel route `/2011` và `/2011/` sang `/2011/index.html` trước bước filesystem, trên cả domain chính và subdomain. Các trang 20/10 giữ nguyên.
+
+Phong cách bảng xanh, kem và vàng nắng. Bấm bó hoa hoặc nút gửi lời cảm ơn để mở thư tri ân, có bốn lời chúc luân phiên và cánh hoa bay. Hiệu ứng giới hạn 10 cánh trên mobile, 16 trên desktop; tắt chuyển động và video khi chọn giảm chuyển động, tạm dừng khi tab ẩn. Nhạc dùng lại MP3 được cung cấp, âm lượng 10%, thử tự phát và phát sau tương tác nếu trình duyệt chặn.
+
+Tài nguyên mới lưu trong `public/media/teachers/`:
+
+- `teachers-bouquet.webp`: bó hoa cúc trắng, hồng kem và cosmos vàng, nơ xanh; WebP trong suốt 1000×1500.
+- `classroom-poster.jpg`: ảnh lớp học 1920×1080 làm nền dự phòng.
+- `classroom.mp4`: video nền H.264 Full HD, 24 fps, 12 giây, không âm thanh, lặp.
+- `classroom-mobile.mp4`: bản video 1280×720 cho điện thoại.
+- `teachers-share.jpg`: ảnh chia sẻ 1200×630 dành riêng cho 20/11.
+- `favicon.svg`: biểu tượng quyển sách.
+
+Hai ảnh được tạo mới bằng **imagegen tích hợp (built-in)**. Video là **cinemagraph render offline từ ảnh lớp học mới**, có camera pan/zoom theo chu kỳ, ánh nắng, bụi sáng và cánh hoa; không phải cảnh quay lớp học hay video AI có nhân vật chuyển động. Canvas chỉ dùng trong bước render offline, không chạy trên website. Mã trang chỉ phát MP4, hiển thị WebP và dùng CSS/Web Animations cho hiệu ứng nhỏ.
+
+Prompt ảnh lớp học:
+
+> Create a premium cinematic background image for a Vietnamese Teachers' Day November 20 tribute website. Wide 16:9 landscape composition. A serene Vietnamese classroom, warm natural morning sunlight through tall windows on the right, muted deep sage green chalkboard across rear wall, softly lit honey oak school desks, a small vase of cream chrysanthemums and pale yellow cosmos, closed books, a fountain pen. Fine golden dust in light shafts, soft autumn atmosphere, elegant photographic realism, editorial film still, beautiful subtle depth. Warm ivory, sage green, honey gold palette, no pink. Keep the left half visually quiet and uncluttered with gentle darker green midtones suitable for a light text overlay, place detailed desk and flowers toward the right. No people, no readable text, no writing, no lettering, no logos, no watermark. Landscape 1536x1024 or wider, highest quality.
+
+Prompt bó hoa (yêu cầu nền trong suốt):
+
+> Create one exquisite complete florist bouquet as a premium isolated product photograph on transparent background, upright full bouquet including stems and wrapping entirely visible with generous transparent margin. Vietnamese Teachers' Day 20 November gift: white chrysanthemums, ivory garden roses, delicate pale yellow cosmos and small white daisies, a few airy sage eucalyptus sprigs, subtle fresh green foliage. Beautiful naturally asymmetrical abundant floral arrangement, wrapped in elegant cream paper with a dark forest green silk ribbon tied in a refined bow, a tiny blank ivory gift card with no writing. Soft warm studio light, highly realistic detailed petals, editorial luxury florist photography, restrained ivory sage honey gold color palette, absolutely no pink flowers. Front three-quarter view, centered, portrait composition, no vase, no floor, no shadow backdrop, no text, no watermark.
+
+Ảnh chia sẻ được dựng từ bố cục thật của trang để đúng nội dung, không cần bot Zalo chạy JavaScript. HTML gốc có canonical, Open Graph và Twitter Card riêng cho 20/11.
