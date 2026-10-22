@@ -272,62 +272,118 @@ function playPageRustle() {
   }
 }
 
-let isTurningPage = false;
+function getLeftPageHTML(index) {
+  const letter = letters[index];
+  const padIndex = String(index + 1).padStart(2, '0');
+  return `
+    <header class="page-header">
+      <span class="chapter-badge">${padIndex} · ${letter.label.toUpperCase()}</span>
+      <span class="chapter-stamp">✦ 20.11 · TRI ÂN ✦</span>
+    </header>
+    <h2 class="letter-heading">${letter.title[0]}<br><em>${letter.title[1]}</em></h2>
+    <p class="salutation">Thầy cô kính mến,</p>
+    <p class="page-p">${letter.paragraphs[0]}</p>
+  `;
+}
 
-function updateLetterContent(index) {
-  letterIndex = index;
+function getRightPageHTML(index) {
   const letter = letters[index];
   const padIndex = String(index + 1).padStart(2, '0');
   const total = String(letters.length).padStart(2, '0');
+  return `
+    <p class="page-p">${letter.paragraphs[1]}</p>
+    <div class="wish-quote">
+      <p>${letter.wish}</p>
+    </div>
+    <div class="letter-signature">
+      <span class="sig-note">Với tất cả lòng biết ơn,</span>
+      <span class="sig-hand">Một người học trò</span>
+    </div>
+    <footer class="page-nav-footer">
+      <button class="page-turn-btn prev-btn" data-action="prev" aria-label="Lật về trang trước">
+        <span aria-hidden="true">‹</span> Trước
+      </button>
+      <span class="page-counter-num">Trang ${padIndex} / ${total}</span>
+      <button class="page-turn-btn next-btn" data-action="next" aria-label="Lật sang trang sau">
+        Sau <span aria-hidden="true">›</span>
+      </button>
+    </footer>
+  `;
+}
 
-  $('#letter-counter').textContent = `Trang ${padIndex} / ${total}`;
-  const pageTag = $('#page-tag');
-  if (pageTag) pageTag.textContent = `${padIndex} · ${letter.label.toUpperCase()}`;
+let isTurningPage = false;
 
-  const italic = document.createElement('em');
-  italic.textContent = letter.title[1];
-  $('#letter-title').replaceChildren(
-    document.createTextNode(letter.title[0]),
-    document.createElement('br'),
-    italic
-  );
-  $('#letter-paragraph-one').textContent = letter.paragraphs[0];
-  $('#letter-paragraph-two').textContent = letter.paragraphs[1];
-  $('#wish-text').textContent = letter.wish;
+function updateStaticPages(index) {
+  letterIndex = index;
+  const left = $('#static-left-content');
+  const right = $('#static-right-content');
+  if (left) left.innerHTML = getLeftPageHTML(index);
+  if (right) right.innerHTML = getRightPageHTML(index);
 
   document.querySelectorAll('.journal-tab').forEach((tab, i) => {
     tab.classList.toggle('is-active', i === index);
   });
+  $('#announcement').textContent = `Đã lật sang trang ${index + 1}: ${letters[index].label}.`;
 }
 
 function turnToPage(targetIndex, direction = 'next') {
   if (isTurningPage || targetIndex === letterIndex) return;
   if (reducedMotion.matches) {
-    updateLetterContent(targetIndex);
-    $('#letter-title').focus({ preventScroll: true });
+    updateStaticPages(targetIndex);
     return;
   }
 
   isTurningPage = true;
   playPageRustle();
 
-  const page = $('#journal-page');
-  const outClass = direction === 'next' ? 'page-turn-out-left' : 'page-turn-out-right';
-  const inClass = direction === 'next' ? 'page-turn-in-right' : 'page-turn-in-left';
+  const flipper = $('#leaf-flipper');
+  const frontContent = $('#flipper-front-content');
+  const backContent = $('#flipper-back-content');
+  const staticLeft = $('#static-left-content');
+  const staticRight = $('#static-right-content');
 
-  page?.classList.add(outClass);
+  const targetLeftHTML = getLeftPageHTML(targetIndex);
+  const targetRightHTML = getRightPageHTML(targetIndex);
 
-  setTimeout(() => {
-    updateLetterContent(targetIndex);
-    page?.classList.remove(outClass);
-    page?.classList.add(inClass);
+  if (direction === 'next') {
+    if (frontContent) frontContent.innerHTML = staticRight ? staticRight.innerHTML : '';
+    if (backContent) backContent.innerHTML = targetLeftHTML;
+    if (staticRight) staticRight.innerHTML = targetRightHTML;
+
+    flipper.className = 'leaf-flipper flip-right-to-left';
+    flipper.style.display = 'block';
 
     setTimeout(() => {
-      page?.classList.remove(inClass);
+      if (staticLeft) staticLeft.innerHTML = targetLeftHTML;
+      flipper.style.display = 'none';
+      flipper.className = 'leaf-flipper';
+      letterIndex = targetIndex;
+      document.querySelectorAll('.journal-tab').forEach((tab, i) => {
+        tab.classList.toggle('is-active', i === targetIndex);
+      });
       isTurningPage = false;
-      $('#letter-title').focus({ preventScroll: true });
-    }, 280);
-  }, 220);
+      $('#announcement').textContent = `Đã lật sang trang ${targetIndex + 1}: ${letters[targetIndex].label}.`;
+    }, 680);
+  } else {
+    if (frontContent) frontContent.innerHTML = targetRightHTML;
+    if (backContent) backContent.innerHTML = staticLeft ? staticLeft.innerHTML : '';
+    if (staticLeft) staticLeft.innerHTML = targetLeftHTML;
+
+    flipper.className = 'leaf-flipper flip-left-to-right';
+    flipper.style.display = 'block';
+
+    setTimeout(() => {
+      if (staticRight) staticRight.innerHTML = targetRightHTML;
+      flipper.style.display = 'none';
+      flipper.className = 'leaf-flipper';
+      letterIndex = targetIndex;
+      document.querySelectorAll('.journal-tab').forEach((tab, i) => {
+        tab.classList.toggle('is-active', i === targetIndex);
+      });
+      isTurningPage = false;
+      $('#announcement').textContent = `Đã lật sang trang ${targetIndex + 1}: ${letters[targetIndex].label}.`;
+    }, 680);
+  }
 }
 
 function openLetter(index) {
@@ -335,11 +391,10 @@ function openLetter(index) {
     turnToPage(index, index > letterIndex ? 'next' : 'prev');
     return;
   }
-  updateLetterContent(index);
+  updateStaticPages(index);
   dialog.showModal();
   dialog.scrollTop = 0;
   document.body.classList.add('is-letter');
-  $('#letter-title').focus({ preventScroll: true });
   playPageRustle();
   syncFlowers();
 }
@@ -360,8 +415,16 @@ function initJournal() {
     });
   }
 
-  $('#next-letter')?.addEventListener('click', () => turnToPage((letterIndex + 1) % letters.length, 'next'));
-  $('#prev-letter')?.addEventListener('click', () => turnToPage((letterIndex - 1 + letters.length) % letters.length, 'prev'));
+  $('#journal-notebook')?.addEventListener('click', event => {
+    const btn = event.target.closest('.page-turn-btn');
+    if (!btn) return;
+    const action = btn.dataset.action;
+    if (action === 'prev') {
+      turnToPage((letterIndex - 1 + letters.length) % letters.length, 'prev');
+    } else if (action === 'next') {
+      turnToPage((letterIndex + 1) % letters.length, 'next');
+    }
+  });
 
   dialog.addEventListener('keydown', event => {
     if (event.key === 'ArrowRight') {
@@ -391,6 +454,8 @@ function initJournal() {
       }
     }
   }, { passive: true });
+
+  updateStaticPages(letterIndex);
 }
 
 initJournal();
