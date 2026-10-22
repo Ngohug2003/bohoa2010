@@ -430,110 +430,380 @@ main {
   animation-delay:.4s;
 }
 
-.letter-paper {
-  position:relative;
-  max-width:760px;
-  padding:30px clamp(28px,5vw,68px) 32px;
-  background:#fcf6e8;
-  color:#294839;
-  margin:0 auto;
-  box-shadow:0 30px 90px #0a211d3b;
-  animation:letter-open .85s cubic-bezier(.2,.7,.2,1) both;
-  border-radius:2px;
-  overflow:hidden;
+/* ========================================================
+   VINTAGE NOTEBOOK / SỔ TAY TRI ÂN (20/11)
+   ======================================================== */
+
+.journal-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.letter-paper::before {
-  content:'';
-  position:absolute;
-  inset:8px;
-  border:1px solid #b7a57c40;
-  pointer-events:none;
+/* Khung bìa sổ da cổ điển */
+.journal-notebook {
+  position: relative;
+  width: 100%;
+  display: flex;
+  background: linear-gradient(135deg, #2b1f18 0%, #1c140f 50%, #2f2219 100%);
+  border-radius: 12px;
+  padding: 18px 20px 20px 52px;
+  box-shadow: 
+    0 35px 90px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(212, 175, 55, 0.3),
+    inset 0 1px 3px rgba(255, 255, 255, 0.1),
+    inset 0 0 35px rgba(0, 0, 0, 0.8);
+  box-sizing: border-box;
+  animation: letter-open .75s cubic-bezier(.2,.7,.2,1) both;
 }
 
-.letter-paper::after {
-  content:'';
-  position:absolute;
-  inset:0;
-  background:repeating-linear-gradient(0deg,transparent 0 3px,#9e7e3c03 3px 4px);
-  pointer-events:none;
+/* Viền góc kim loại đồng cổ (Corner accents) */
+.journal-notebook::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(212, 180, 110, 0.22);
+  border-radius: 8px;
+  pointer-events: none;
 }
 
-.letter-top {
-  display:flex;
-  justify-content:space-between;
-  font-size:10px;
-  letter-spacing:2px;
-  color:#697856;
-  border-bottom:1px solid #b4a78260;
-  padding-bottom:17px;
+/* Gáy sổ bên trái */
+.journal-spine {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 48px;
+  background: linear-gradient(90deg, #160e0a 0%, #2e2017 40%, #1c130e 75%, #100b08 100%);
+  border-radius: 12px 0 0 12px;
+  box-shadow: inset -3px 0 10px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 24px 0;
+  pointer-events: none;
+  z-index: 2;
 }
 
-.paper-flower {
-  position:absolute;
-  top:55px;
-  right:33px;
-  font:62px var(--serif);
-  color:#b3995d;
-  opacity:.35;
-  transform:rotate(12deg);
+.spine-stitch {
+  width: 14px;
+  height: 2px;
+  background: #cbb483;
+  opacity: 0.6;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.8);
 }
 
-.letter-paper h2 {
-  font:500 calc(clamp(39px,4.3vw,62px) + 2px)/1.02 var(--serif);
-  letter-spacing:-.035em;
-  margin:26px 0 23px;
+.spine-rivet {
+  width: 6px;
+  height: 6px;
+  background: radial-gradient(circle at 35% 35%, #f2d89b, #937237 80%);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.7);
 }
 
-.letter-paper h2:focus {
-  outline:none;
+/* Dải ruy băng lụa đỏ kẹp trang */
+.journal-ribbon {
+  position: absolute;
+  top: -8px;
+  left: 30px;
+  width: 14px;
+  height: 90px;
+  background: linear-gradient(180deg, #881921 0%, #bd2c37 60%, #76141a 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 86%, 0 100%);
+  box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.45);
+  z-index: 12;
+  pointer-events: none;
 }
 
-.letter-paper h2 em {
-  color:#8a723e;
-  font-weight:400;
+/* Tabs mục lục bên mép phải sổ */
+.journal-tabs {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 8px;
+  z-index: 8;
+  padding: 24px 0 16px 0;
+  margin-left: -1px;
 }
 
-.letter-paper>p,.wish p {
-  font-size:14px;
-  line-height:1.95;
-  margin:14px 0;
-  position:relative;
-  z-index:1;
+.journal-tab {
+  background: #deb881;
+  color: #3b2817;
+  border: 1px solid #b7955f;
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  padding: 7px 11px 7px 9px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
 }
 
-.letter-paper .salutation {
-  font-family:var(--serif);
-  font-size:25px;
-  font-style:italic;
-  margin:16px 0 12px;
+.journal-tab .tab-index {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 11px;
+  opacity: 0.75;
 }
 
-.wish {
-  border-left:2px solid #b39a62;
-  padding-left:17px;
-  margin-top:19px;
-  min-height:72px;
+.journal-tab:hover {
+  background: #eed5a9;
+  transform: translateX(4px);
+  color: #241609;
 }
 
-.wish p {
-  font-weight:500;
+.journal-tab.is-active {
+  background: linear-gradient(135deg, #1b3a2c 0%, #274d3b 100%);
+  color: #faebd0;
+  border-color: #dcb874;
+  transform: translateX(7px);
+  box-shadow: 3px 5px 12px rgba(0, 0, 0, 0.4);
 }
 
-.wish.is-changing {
-  animation:wish-change .6s ease both;
+.journal-tab.is-active .tab-index {
+  color: #e5c37f;
+  opacity: 1;
 }
 
-.letter-paper .letter-signature {
-  font-size:12px;
-  text-align:right;
-  line-height:1.7;
-  margin-top:20px;
+/* Khung trang sách 3D */
+.journal-sheet-container {
+  flex: 1;
+  position: relative;
+  perspective: 1600px;
+  min-height: 480px;
+  width: 100%;
 }
 
-.letter-signature em {
-  font:italic 27px var(--serif);
-  color:#8a723e;
+/* Trang giấy sổ tay vintage */
+.journal-sheet {
+  position: relative;
+  background: radial-gradient(ellipse at 50% 25%, #fffefb 0%, #f7f1df 65%, #ebdcb8 100%);
+  border-radius: 4px 10px 10px 4px;
+  padding: 30px clamp(24px, 4.5vw, 52px) 26px;
+  box-shadow: 
+    inset 0 0 45px rgba(160, 125, 75, 0.16),
+    -7px 0 16px rgba(0, 0, 0, 0.22),
+    0 4px 20px rgba(0, 0, 0, 0.15);
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 28px,
+    rgba(165, 135, 90, 0.14) 28px,
+    rgba(165, 135, 90, 0.14) 29px
+  );
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+  box-sizing: border-box;
+}
+
+/* Viền giấy mộc */
+.journal-sheet::before {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border: 1px dashed rgba(180, 150, 100, 0.35);
+  border-radius: 2px 8px 8px 2px;
+  pointer-events: none;
+}
+
+/* Header trang sổ */
+.sheet-header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(180, 150, 100, 0.35);
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+}
+
+.sheet-chapter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.sheet-tag {
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  color: #796131;
+  background: rgba(206, 173, 114, 0.22);
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(184, 150, 90, 0.35);
+}
+
+.sheet-stamp {
+  font-size: 10px;
+  letter-spacing: 2.2px;
+  color: #8c713c;
+  opacity: 0.85;
+}
+
+.sheet-watermark {
+  position: absolute;
+  top: -4px;
+  right: -8px;
+  width: 58px;
+  height: 58px;
+  opacity: 0.24;
+  pointer-events: none;
+  filter: sepia(0.65) drop-shadow(1px 2px 4px rgba(0,0,0,0.1));
+}
+
+.sheet-watermark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Nội dung thư */
+.sheet-body {
+  position: relative;
+  z-index: 1;
+}
+
+.sheet-title {
+  font: 500 calc(clamp(32px, 3.8vw, 48px) + 2px)/1.08 var(--serif);
+  letter-spacing: -0.03em;
+  color: #271c14;
+  margin: 12px 0 16px;
+}
+
+.sheet-title:focus {
+  outline: none;
+}
+
+.sheet-title em {
+  color: #8c7038;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.sheet-body .salutation {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 24px;
+  color: #3b2b1e;
+  margin: 14px 0 10px;
+}
+
+.sheet-paragraph {
+  font-size: 14px;
+  line-height: 1.95;
+  color: #2d2218;
+  margin: 12px 0;
+}
+
+.sheet-wish {
+  border-left: 3px solid #b89858;
+  background: rgba(230, 208, 166, 0.28);
+  padding: 12px 18px;
+  border-radius: 0 6px 6px 0;
+  margin: 18px 0;
+  min-height: auto;
+}
+
+.sheet-wish p {
+  font-size: 14px;
+  line-height: 1.85;
+  color: #281e15;
+  font-weight: 500;
+  margin: 0;
+}
+
+.sheet-signature {
+  font-size: 12px;
+  text-align: right;
+  line-height: 1.7;
+  color: #55412b;
+  margin-top: 18px;
+}
+
+.sheet-signature em {
+  font: italic 26px var(--serif);
+  color: #886d34;
+}
+
+/* Footer & Nút lật trang */
+.sheet-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(180, 150, 100, 0.35);
+  padding-top: 16px;
+  margin-top: 20px;
+}
+
+.sheet-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(224, 196, 146, 0.3);
+  border: 1px solid rgba(175, 140, 85, 0.4);
+  color: #3f2e1c;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.sheet-nav-btn:hover {
+  background: rgba(200, 165, 105, 0.5);
+  color: #1a120b;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.sheet-counter {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: #6b5329;
+}
+
+/* Nút quay lại vườn hoa */
+.journal-return {
+  margin-top: 14px;
+}
+
+.journal-back-btn {
+  background: none;
+  border: none;
+  color: #dfcaa0;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 6px 12px;
+  transition: all 0.25s ease;
+  opacity: 0.85;
+}
+
+.journal-back-btn:hover {
+  opacity: 1;
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .letter-actions {
@@ -1142,56 +1412,226 @@ body.is-garden {
   text-underline-offset:4px;
 }
 
-.letter-dialog {
-  position:fixed;
-  inset:0;
-  margin:auto;
-  width:min(760px,calc(100% - 36px));
-  max-width:none;
-  max-height:calc(100dvh - 40px);
-  border:0;
-  padding:0;
-  background:transparent;
-  overflow-x:hidden;
-  overflow-y:auto;
-  overscroll-behavior:contain;
-  scrollbar-width:thin;
-  scrollbar-color:#b9a269 #fcf6e8;
-  border-radius:3px;
+.journal-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(840px, calc(100% - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 36px);
+  border: 0;
+  padding: 0;
+  background: transparent;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #c9ad74 #1a2c24;
 }
 
-.letter-dialog::backdrop {
-  background:#0e261ed9;
-  animation:backdrop-in .3s both;
+.journal-dialog::backdrop {
+  background: rgba(8, 22, 17, 0.88);
+  backdrop-filter: blur(6px);
+  animation: backdrop-in 0.35s both;
 }
 
-.letter-dialog .letter-paper {
-  box-shadow:none;
+.close-journal {
+  position: absolute;
+  top: 8px;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  color: #dfcaa0;
+  background: rgba(30, 48, 38, 0.85);
+  border: 1px solid rgba(220, 190, 130, 0.35);
+  font: 20px/1 var(--serif);
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 20;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.letter-dialog .letter-top {
-  position:relative;
-  padding-right:28px;
-  gap:12px;
+.close-journal:hover {
+  background: #315140;
+  color: #fff;
+  border-color: #e5cd96;
+  transform: scale(1.08) rotate(90deg);
 }
 
-.close-letter {
-  position:absolute;
-  top:-14px;
-  right:-17px;
-  width:44px;
-  height:44px;
-  display:grid;
-  place-items:center;
-  color:#53694d;
-  background:none;
-  font:30px/1 var(--serif);
-  border-radius:50%;
-  z-index:2;
+/* ========================================================
+   ANIMATION LẬT TRANG 3D
+   ======================================================== */
+
+.page-turn-out-left {
+  animation: pageFlipOutLeft 0.24s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-.close-letter:hover {
-  background:#c7b88b29;
+.page-turn-in-right {
+  animation: pageFlipInRight 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.page-turn-out-right {
+  animation: pageFlipOutRight 0.24s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.page-turn-in-left {
+  animation: pageFlipInLeft 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes pageFlipOutLeft {
+  0% {
+    transform: rotateY(0deg);
+    opacity: 1;
+    filter: brightness(1);
+  }
+  100% {
+    transform: rotateY(-80deg) scale(0.96) skewY(-2deg);
+    opacity: 0.15;
+    filter: brightness(0.85);
+  }
+}
+
+@keyframes pageFlipInRight {
+  0% {
+    transform: rotateY(70deg) scale(0.96) skewY(2deg);
+    opacity: 0.15;
+    filter: brightness(0.88);
+  }
+  100% {
+    transform: rotateY(0deg) scale(1) skewY(0deg);
+    opacity: 1;
+    filter: brightness(1);
+  }
+}
+
+@keyframes pageFlipOutRight {
+  0% {
+    transform: rotateY(0deg);
+    opacity: 1;
+    filter: brightness(1);
+  }
+  100% {
+    transform: rotateY(80deg) scale(0.96) skewY(2deg);
+    opacity: 0.15;
+    filter: brightness(0.85);
+  }
+}
+
+@keyframes pageFlipInLeft {
+  0% {
+    transform: rotateY(-70deg) scale(0.96) skewY(-2deg);
+    opacity: 0.15;
+    filter: brightness(0.88);
+  }
+  100% {
+    transform: rotateY(0deg) scale(1) skewY(0deg);
+    opacity: 1;
+    filter: brightness(1);
+  }
+}
+
+/* ========================================================
+   RESPONSIVE CHO SỔ TAY (MOBILE / TABLET)
+   ======================================================== */
+
+@media (max-width: 860px) {
+  .journal-dialog {
+    width: calc(100% - 24px);
+  }
+
+  .journal-tabs {
+    order: -1;
+    position: static;
+    right: auto;
+    top: auto;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 0 4px 10px;
+    margin-bottom: 8px;
+    margin-left: 0;
+    width: 100%;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .journal-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .journal-tab {
+    border-radius: 6px;
+    border-left: 1px solid #b7955f;
+    padding: 6px 12px;
+    flex-shrink: 0;
+  }
+
+  .journal-tab.is-active {
+    transform: translateY(-2px);
+  }
+
+  .journal-notebook {
+    flex-direction: column;
+    padding: 16px 14px 16px 36px;
+  }
+
+  .journal-spine {
+    width: 30px;
+  }
+
+  .journal-ribbon {
+    left: 18px;
+    width: 11px;
+    height: 65px;
+  }
+
+  .close-journal {
+    top: -6px;
+    right: 0;
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .journal-notebook {
+    padding: 14px 10px 14px 28px;
+  }
+
+  .journal-spine {
+    width: 22px;
+  }
+
+  .journal-ribbon {
+    left: 12px;
+    width: 9px;
+    height: 50px;
+  }
+
+  .journal-sheet {
+    padding: 20px 16px 18px;
+  }
+
+  .sheet-title {
+    font-size: 28px;
+  }
+
+  .sheet-paragraph {
+    font-size: 13px;
+    line-height: 1.85;
+  }
+
+  .sheet-nav-btn {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+
+  .sheet-counter {
+    font-size: 12px;
+  }
 }
 
 @keyframes backdrop-in {

@@ -237,21 +237,163 @@ function showGarden(open) {
   $('#announcement').textContent = open ? 'Hoa đang lần lượt rơi từ trên xuống. Chạm vào từng bông hoa để đọc một bức thư riêng.' : 'Trở về bó hoa tri ân thầy cô.';
 }
 
-function openLetter(index) {
+let audioCtx = null;
+function playPageRustle() {
+  if (!musicWanted || reducedMotion.matches) return;
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    if (!audioCtx) audioCtx = new AudioContext();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const sampleRate = audioCtx.sampleRate;
+    const bufferSize = Math.floor(sampleRate * 0.16);
+    const buffer = audioCtx.createBuffer(1, bufferSize, sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      const t = i / bufferSize;
+      const envelope = Math.sin(t * Math.PI) * Math.exp(-t * 2.5);
+      data[i] = (Math.random() * 2 - 1) * envelope * 0.16;
+    }
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(1250, audioCtx.currentTime);
+    filter.Q.setValueAtTime(2.0, audioCtx.currentTime);
+    const gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0.28, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.16);
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+    noise.start();
+  } catch (_) {
+    // Non-critical audio effect
+  }
+}
+
+let isTurningPage = false;
+
+function updateLetterContent(index) {
   letterIndex = index;
   const letter = letters[index];
-  $('#letter-counter').textContent = `BỨC THƯ ${String(index + 1).padStart(2, '0')} / ${String(letters.length).padStart(2, '0')}`;
-  const italic = document.createElement('em'); italic.textContent = letter.title[1];
-  $('#letter-title').replaceChildren(document.createTextNode(letter.title[0]), document.createElement('br'), italic);
+  const padIndex = String(index + 1).padStart(2, '0');
+  const total = String(letters.length).padStart(2, '0');
+
+  $('#letter-counter').textContent = `Trang ${padIndex} / ${total}`;
+  const pageTag = $('#page-tag');
+  if (pageTag) pageTag.textContent = `${padIndex} · ${letter.label.toUpperCase()}`;
+
+  const italic = document.createElement('em');
+  italic.textContent = letter.title[1];
+  $('#letter-title').replaceChildren(
+    document.createTextNode(letter.title[0]),
+    document.createElement('br'),
+    italic
+  );
   $('#letter-paragraph-one').textContent = letter.paragraphs[0];
   $('#letter-paragraph-two').textContent = letter.paragraphs[1];
   $('#wish-text').textContent = letter.wish;
-  if (!dialog.open) dialog.showModal();
+
+  document.querySelectorAll('.journal-tab').forEach((tab, i) => {
+    tab.classList.toggle('is-active', i === index);
+  });
+}
+
+function turnToPage(targetIndex, direction = 'next') {
+  if (isTurningPage || targetIndex === letterIndex) return;
+  if (reducedMotion.matches) {
+    updateLetterContent(targetIndex);
+    $('#letter-title').focus({ preventScroll: true });
+    return;
+  }
+
+  isTurningPage = true;
+  playPageRustle();
+
+  const page = $('#journal-page');
+  const outClass = direction === 'next' ? 'page-turn-out-left' : 'page-turn-out-right';
+  const inClass = direction === 'next' ? 'page-turn-in-right' : 'page-turn-in-left';
+
+  page?.classList.add(outClass);
+
+  setTimeout(() => {
+    updateLetterContent(targetIndex);
+    page?.classList.remove(outClass);
+    page?.classList.add(inClass);
+
+    setTimeout(() => {
+      page?.classList.remove(inClass);
+      isTurningPage = false;
+      $('#letter-title').focus({ preventScroll: true });
+    }, 280);
+  }, 220);
+}
+
+function openLetter(index) {
+  if (dialog.open) {
+    turnToPage(index, index > letterIndex ? 'next' : 'prev');
+    return;
+  }
+  updateLetterContent(index);
+  dialog.showModal();
   dialog.scrollTop = 0;
   document.body.classList.add('is-letter');
   $('#letter-title').focus({ preventScroll: true });
+  playPageRustle();
   syncFlowers();
 }
+
+function initJournal() {
+  const tabsContainer = $('#journal-tabs');
+  if (tabsContainer) {
+    tabsContainer.replaceChildren();
+    letters.forEach((letter, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `journal-tab${i === letterIndex ? ' is-active' : ''}`;
+      btn.id = `journal-tab-${i}`;
+      btn.innerHTML = `<span class="tab-index">${String(i + 1).padStart(2, '0')}</span><span class="tab-label">${letter.label}</span>`;
+      btn.setAttribute('aria-label', `Trang ${i + 1}: ${letter.label}`);
+      btn.addEventListener('click', () => turnToPage(i, i > letterIndex ? 'next' : 'prev'));
+      tabsContainer.append(btn);
+    });
+  }
+
+  $('#next-letter')?.addEventListener('click', () => turnToPage((letterIndex + 1) % letters.length, 'next'));
+  $('#prev-letter')?.addEventListener('click', () => turnToPage((letterIndex - 1 + letters.length) % letters.length, 'prev'));
+
+  dialog.addEventListener('keydown', event => {
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      turnToPage((letterIndex + 1) % letters.length, 'next');
+    } else if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      turnToPage((letterIndex - 1 + letters.length) % letters.length, 'prev');
+    }
+  });
+
+  let touchStartX = 0;
+  let touchStartY = 0;
+  const notebook = $('#journal-notebook');
+  notebook?.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].clientX;
+    touchStartY = e.changedTouches[0].clientY;
+  }, { passive: true });
+  notebook?.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) {
+        turnToPage((letterIndex + 1) % letters.length, 'next');
+      } else {
+        turnToPage((letterIndex - 1 + letters.length) % letters.length, 'prev');
+      }
+    }
+  }, { passive: true });
+}
+
+initJournal();
 
 $('#open-letter').addEventListener('click', () => showGarden(true));
 $('#bouquet').addEventListener('click', () => showGarden(true));
@@ -260,7 +402,6 @@ $('#replay-flowers').addEventListener('click', () => {
   makeFlowers();
   $('#announcement').textContent = 'Hoa bắt đầu rơi lại lần lượt từ trên xuống, mỗi bông giữ một bức thư riêng.';
 });
-$('#next-letter').addEventListener('click', () => openLetter((letterIndex + 1) % letters.length));
 ['close-letter', 'return-garden'].forEach(id => $(`#${id}`).addEventListener('click', () => dialog.close()));
 dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
 dialog.addEventListener('close', () => {
