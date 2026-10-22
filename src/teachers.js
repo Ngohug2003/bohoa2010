@@ -237,228 +237,21 @@ function showGarden(open) {
   $('#announcement').textContent = open ? 'Hoa đang lần lượt rơi từ trên xuống. Chạm vào từng bông hoa để đọc một bức thư riêng.' : 'Trở về bó hoa tri ân thầy cô.';
 }
 
-let audioCtx = null;
-function playPageRustle() {
-  if (!musicWanted || reducedMotion.matches) return;
-  try {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContext) return;
-    if (!audioCtx) audioCtx = new AudioContext();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    const sampleRate = audioCtx.sampleRate;
-    const bufferSize = Math.floor(sampleRate * 0.16);
-    const buffer = audioCtx.createBuffer(1, bufferSize, sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      const t = i / bufferSize;
-      const envelope = Math.sin(t * Math.PI) * Math.exp(-t * 2.5);
-      data[i] = (Math.random() * 2 - 1) * envelope * 0.16;
-    }
-    const noise = audioCtx.createBufferSource();
-    noise.buffer = buffer;
-    const filter = audioCtx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.frequency.setValueAtTime(1250, audioCtx.currentTime);
-    filter.Q.setValueAtTime(2.0, audioCtx.currentTime);
-    const gain = audioCtx.createGain();
-    gain.gain.setValueAtTime(0.28, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.16);
-    noise.connect(filter);
-    filter.connect(gain);
-    gain.connect(audioCtx.destination);
-    noise.start();
-  } catch (_) {
-    // Non-critical audio effect
-  }
-}
-
-function getLeftPageHTML(index) {
-  const letter = letters[index];
-  const padIndex = String(index + 1).padStart(2, '0');
-  return `
-    <header class="page-header">
-      <span class="chapter-badge">${padIndex} · ${letter.label.toUpperCase()}</span>
-      <span class="chapter-stamp">✦ 20.11 · TRI ÂN ✦</span>
-    </header>
-    <h2 class="letter-heading">${letter.title[0]}<br><em>${letter.title[1]}</em></h2>
-    <p class="salutation">Thầy cô kính mến,</p>
-    <p class="page-p">${letter.paragraphs[0]}</p>
-  `;
-}
-
-function getRightPageHTML(index) {
-  const letter = letters[index];
-  const padIndex = String(index + 1).padStart(2, '0');
-  const total = String(letters.length).padStart(2, '0');
-  return `
-    <p class="page-p">${letter.paragraphs[1]}</p>
-    <div class="wish-quote">
-      <p>${letter.wish}</p>
-    </div>
-    <div class="letter-signature">
-      <span class="sig-note">Với tất cả lòng biết ơn,</span>
-      <span class="sig-hand">Một người học trò</span>
-    </div>
-    <footer class="page-nav-footer">
-      <button class="page-turn-btn prev-btn" data-action="prev" aria-label="Lật về trang trước">
-        <span aria-hidden="true">‹</span> Trước
-      </button>
-      <span class="page-counter-num">Trang ${padIndex} / ${total}</span>
-      <button class="page-turn-btn next-btn" data-action="next" aria-label="Lật sang trang sau">
-        Sau <span aria-hidden="true">›</span>
-      </button>
-    </footer>
-  `;
-}
-
-let isTurningPage = false;
-
-function updateStaticPages(index) {
-  letterIndex = index;
-  const left = $('#static-left-content');
-  const right = $('#static-right-content');
-  if (left) left.innerHTML = getLeftPageHTML(index);
-  if (right) right.innerHTML = getRightPageHTML(index);
-
-  document.querySelectorAll('.journal-tab').forEach((tab, i) => {
-    tab.classList.toggle('is-active', i === index);
-  });
-  $('#announcement').textContent = `Đã lật sang trang ${index + 1}: ${letters[index].label}.`;
-}
-
-function turnToPage(targetIndex, direction = 'next') {
-  if (isTurningPage || targetIndex === letterIndex) return;
-  if (reducedMotion.matches) {
-    updateStaticPages(targetIndex);
-    return;
-  }
-
-  isTurningPage = true;
-  playPageRustle();
-
-  const flipper = $('#leaf-flipper');
-  const frontContent = $('#flipper-front-content');
-  const backContent = $('#flipper-back-content');
-  const staticLeft = $('#static-left-content');
-  const staticRight = $('#static-right-content');
-
-  const targetLeftHTML = getLeftPageHTML(targetIndex);
-  const targetRightHTML = getRightPageHTML(targetIndex);
-
-  if (direction === 'next') {
-    if (frontContent) frontContent.innerHTML = staticRight ? staticRight.innerHTML : '';
-    if (backContent) backContent.innerHTML = targetLeftHTML;
-    if (staticRight) staticRight.innerHTML = targetRightHTML;
-
-    flipper.className = 'leaf-flipper flip-right-to-left';
-    flipper.style.display = 'block';
-
-    setTimeout(() => {
-      if (staticLeft) staticLeft.innerHTML = targetLeftHTML;
-      flipper.style.display = 'none';
-      flipper.className = 'leaf-flipper';
-      letterIndex = targetIndex;
-      document.querySelectorAll('.journal-tab').forEach((tab, i) => {
-        tab.classList.toggle('is-active', i === targetIndex);
-      });
-      isTurningPage = false;
-      $('#announcement').textContent = `Đã lật sang trang ${targetIndex + 1}: ${letters[targetIndex].label}.`;
-    }, 680);
-  } else {
-    if (frontContent) frontContent.innerHTML = targetRightHTML;
-    if (backContent) backContent.innerHTML = staticLeft ? staticLeft.innerHTML : '';
-    if (staticLeft) staticLeft.innerHTML = targetLeftHTML;
-
-    flipper.className = 'leaf-flipper flip-left-to-right';
-    flipper.style.display = 'block';
-
-    setTimeout(() => {
-      if (staticRight) staticRight.innerHTML = targetRightHTML;
-      flipper.style.display = 'none';
-      flipper.className = 'leaf-flipper';
-      letterIndex = targetIndex;
-      document.querySelectorAll('.journal-tab').forEach((tab, i) => {
-        tab.classList.toggle('is-active', i === targetIndex);
-      });
-      isTurningPage = false;
-      $('#announcement').textContent = `Đã lật sang trang ${targetIndex + 1}: ${letters[targetIndex].label}.`;
-    }, 680);
-  }
-}
-
 function openLetter(index) {
-  if (dialog.open) {
-    turnToPage(index, index > letterIndex ? 'next' : 'prev');
-    return;
-  }
-  updateStaticPages(index);
-  dialog.showModal();
+  letterIndex = index;
+  const letter = letters[index];
+  $('#letter-counter').textContent = `BỨC THƯ ${String(index + 1).padStart(2, '0')} / ${String(letters.length).padStart(2, '0')}`;
+  const italic = document.createElement('em'); italic.textContent = letter.title[1];
+  $('#letter-title').replaceChildren(document.createTextNode(letter.title[0]), document.createElement('br'), italic);
+  $('#letter-paragraph-one').textContent = letter.paragraphs[0];
+  $('#letter-paragraph-two').textContent = letter.paragraphs[1];
+  $('#wish-text').textContent = letter.wish;
+  if (!dialog.open) dialog.showModal();
   dialog.scrollTop = 0;
   document.body.classList.add('is-letter');
-  playPageRustle();
+  $('#letter-title').focus({ preventScroll: true });
   syncFlowers();
 }
-
-function initJournal() {
-  const tabsContainer = $('#journal-tabs');
-  if (tabsContainer) {
-    tabsContainer.replaceChildren();
-    letters.forEach((letter, i) => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = `journal-tab${i === letterIndex ? ' is-active' : ''}`;
-      btn.id = `journal-tab-${i}`;
-      btn.innerHTML = `<span class="tab-index">${String(i + 1).padStart(2, '0')}</span><span class="tab-label">${letter.label}</span>`;
-      btn.setAttribute('aria-label', `Trang ${i + 1}: ${letter.label}`);
-      btn.addEventListener('click', () => turnToPage(i, i > letterIndex ? 'next' : 'prev'));
-      tabsContainer.append(btn);
-    });
-  }
-
-  $('#journal-notebook')?.addEventListener('click', event => {
-    const btn = event.target.closest('.page-turn-btn');
-    if (!btn) return;
-    const action = btn.dataset.action;
-    if (action === 'prev') {
-      turnToPage((letterIndex - 1 + letters.length) % letters.length, 'prev');
-    } else if (action === 'next') {
-      turnToPage((letterIndex + 1) % letters.length, 'next');
-    }
-  });
-
-  dialog.addEventListener('keydown', event => {
-    if (event.key === 'ArrowRight') {
-      event.preventDefault();
-      turnToPage((letterIndex + 1) % letters.length, 'next');
-    } else if (event.key === 'ArrowLeft') {
-      event.preventDefault();
-      turnToPage((letterIndex - 1 + letters.length) % letters.length, 'prev');
-    }
-  });
-
-  let touchStartX = 0;
-  let touchStartY = 0;
-  const notebook = $('#journal-notebook');
-  notebook?.addEventListener('touchstart', e => {
-    touchStartX = e.changedTouches[0].clientX;
-    touchStartY = e.changedTouches[0].clientY;
-  }, { passive: true });
-  notebook?.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    const dy = e.changedTouches[0].clientY - touchStartY;
-    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
-      if (dx < 0) {
-        turnToPage((letterIndex + 1) % letters.length, 'next');
-      } else {
-        turnToPage((letterIndex - 1 + letters.length) % letters.length, 'prev');
-      }
-    }
-  }, { passive: true });
-
-  updateStaticPages(letterIndex);
-}
-
-initJournal();
 
 $('#open-letter').addEventListener('click', () => showGarden(true));
 $('#bouquet').addEventListener('click', () => showGarden(true));
@@ -467,6 +260,7 @@ $('#replay-flowers').addEventListener('click', () => {
   makeFlowers();
   $('#announcement').textContent = 'Hoa bắt đầu rơi lại lần lượt từ trên xuống, mỗi bông giữ một bức thư riêng.';
 });
+$('#next-letter').addEventListener('click', () => openLetter((letterIndex + 1) % letters.length));
 ['close-letter', 'return-garden'].forEach(id => $(`#${id}`).addEventListener('click', () => dialog.close()));
 dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
 dialog.addEventListener('close', () => {

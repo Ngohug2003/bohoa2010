@@ -430,371 +430,110 @@ main {
   animation-delay:.4s;
 }
 
-/* ========================================================
-   VINTAGE OPEN BOOK FRAME (20/11) - DỰA TRÊN ẢNH NỀN THẬT
-   ======================================================== */
-
-.journal-wrapper {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px 0 16px;
-  width: 100%;
-  box-sizing: border-box;
+.letter-paper {
+  position:relative;
+  max-width:760px;
+  padding:30px clamp(28px,5vw,68px) 32px;
+  background:#fcf6e8;
+  color:#294839;
+  margin:0 auto;
+  box-shadow:0 30px 90px #0a211d3b;
+  animation:letter-open .85s cubic-bezier(.2,.7,.2,1) both;
+  border-radius:2px;
+  overflow:hidden;
 }
 
-/* Tabs mục lục 6 chương bài học phía trên sổ */
-.journal-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 12px;
-  width: 100%;
-  z-index: 10;
+.letter-paper::before {
+  content:'';
+  position:absolute;
+  inset:8px;
+  border:1px solid #b7a57c40;
+  pointer-events:none;
 }
 
-.journal-tab {
-  background: rgba(22, 38, 30, 0.88);
-  color: #dfcca5;
-  border: 1px solid rgba(220, 190, 130, 0.35);
-  border-radius: 20px;
-  padding: 6px 14px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.8px;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  white-space: nowrap;
+.letter-paper::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:repeating-linear-gradient(0deg,transparent 0 3px,#9e7e3c03 3px 4px);
+  pointer-events:none;
 }
 
-.journal-tab .tab-index {
-  font-family: var(--serif);
-  font-weight: 700;
-  font-size: 11px;
-  color: #c9ab6e;
+.letter-top {
+  display:flex;
+  justify-content:space-between;
+  font-size:10px;
+  letter-spacing:2px;
+  color:#697856;
+  border-bottom:1px solid #b4a78260;
+  padding-bottom:17px;
 }
 
-.journal-tab:hover {
-  background: #284435;
-  color: #fff;
-  border-color: #eed69b;
-  transform: translateY(-2px);
+.paper-flower {
+  position:absolute;
+  top:55px;
+  right:33px;
+  font:62px var(--serif);
+  color:#b3995d;
+  opacity:.35;
+  transform:rotate(12deg);
 }
 
-.journal-tab.is-active {
-  background: linear-gradient(135deg, #d4af37 0%, #aa8222 100%);
-  color: #1a2920;
-  border-color: #fff;
-  font-weight: 700;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.45);
+.letter-paper h2 {
+  font:500 calc(clamp(39px,4.3vw,62px) + 2px)/1.02 var(--serif);
+  letter-spacing:-.035em;
+  margin:26px 0 23px;
 }
 
-.journal-tab.is-active .tab-index {
-  color: #1a2920;
+.letter-paper h2:focus {
+  outline:none;
 }
 
-/* Khung cuốn sổ mở trên nền ảnh PNG trong suốt */
-.real-book-stage {
-  position: relative;
-  width: min(940px, 100%);
-  height: 560px;
-  perspective: 2200px;
-  background: url('/media/teachers/vintage-book-open.png') no-repeat center center;
-  background-size: 100% 100%;
-  display: flex;
-  box-sizing: border-box;
-  padding: 36px 48px;
+.letter-paper h2 em {
+  color:#8a723e;
+  font-weight:400;
 }
 
-/* Trang bên trái cố định */
-.leaf-left {
-  position: absolute;
-  top: 36px;
-  bottom: 36px;
-  left: 48px;
-  width: calc(50% - 48px);
-  background: radial-gradient(ellipse at 85% 50%, #fffefc 0%, #f7f1dd 65%, #eadbb4 100%);
-  border-radius: 4px 0 0 4px;
-  box-shadow: inset -6px 0 16px rgba(110, 85, 45, 0.22);
-  overflow: hidden;
-  box-sizing: border-box;
+.letter-paper>p,.wish p {
+  font-size:14px;
+  line-height:1.95;
+  margin:14px 0;
+  position:relative;
+  z-index:1;
 }
 
-/* Trang bên phải cố định */
-.leaf-right {
-  position: absolute;
-  top: 36px;
-  bottom: 36px;
-  right: 48px;
-  width: calc(50% - 48px);
-  background: radial-gradient(ellipse at 15% 50%, #fffefc 0%, #f7f1dd 65%, #eadbb4 100%);
-  border-radius: 0 4px 4px 0;
-  box-shadow: inset 6px 0 16px rgba(110, 85, 45, 0.22);
-  overflow: hidden;
-  box-sizing: border-box;
+.letter-paper .salutation {
+  font-family:var(--serif);
+  font-size:25px;
+  font-style:italic;
+  margin:16px 0 12px;
 }
 
-/* Dòng kẻ giấy chìm trên trang */
-.leaf-content {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  padding: 24px 28px 20px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background-image: repeating-linear-gradient(
-    transparent,
-    transparent 25px,
-    rgba(165, 135, 95, 0.14) 25px,
-    rgba(165, 135, 95, 0.14) 26px
-  );
+.wish {
+  border-left:2px solid #b39a62;
+  padding-left:17px;
+  margin-top:19px;
+  min-height:72px;
 }
 
-/* Tờ giấy lật 3D */
-.leaf-flipper {
-  position: absolute;
-  top: 36px;
-  bottom: 36px;
-  width: calc(50% - 48px);
-  transform-style: preserve-3d;
-  z-index: 25;
-  pointer-events: none;
-  display: none;
+.wish p {
+  font-weight:500;
 }
 
-.leaf-flipper.flip-right-to-left {
-  left: 50%;
-  transform-origin: left center;
-  animation: flipPageForward 0.68s cubic-bezier(0.25, 1, 0.45, 1) forwards;
+.wish.is-changing {
+  animation:wish-change .6s ease both;
 }
 
-.leaf-flipper.flip-left-to-right {
-  right: 50%;
-  transform-origin: right center;
-  animation: flipPageBackward 0.68s cubic-bezier(0.25, 1, 0.45, 1) forwards;
+.letter-paper .letter-signature {
+  font-size:12px;
+  text-align:right;
+  line-height:1.7;
+  margin-top:20px;
 }
 
-.flipper-face {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  overflow: hidden;
-  box-sizing: border-box;
-}
-
-.flipper-front {
-  background: radial-gradient(ellipse at 15% 50%, #fffefc 0%, #f7f1dd 65%, #eadbb4 100%);
-  border-radius: 0 4px 4px 0;
-  transform: rotateY(0deg);
-}
-
-.flipper-back {
-  background: radial-gradient(ellipse at 85% 50%, #fffefc 0%, #f7f1dd 65%, #eadbb4 100%);
-  border-radius: 4px 0 0 4px;
-  transform: rotateY(180deg);
-}
-
-@keyframes flipPageForward {
-  0% {
-    transform: rotateY(0deg);
-    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.08);
-  }
-  45% {
-    box-shadow: -20px 0 35px rgba(0, 0, 0, 0.35);
-  }
-  100% {
-    transform: rotateY(-180deg);
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
-  }
-}
-
-@keyframes flipPageBackward {
-  0% {
-    transform: rotateY(0deg);
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
-  }
-  45% {
-    box-shadow: 20px 0 35px rgba(0, 0, 0, 0.35);
-  }
-  100% {
-    transform: rotateY(180deg);
-    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.08);
-  }
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  padding-bottom: 6px;
-  border-bottom: 1px dashed rgba(160, 130, 85, 0.35);
-}
-
-.chapter-badge {
-  font-size: 10px;
-  letter-spacing: 1.5px;
-  font-weight: 700;
-  color: #7d6029;
-  text-transform: uppercase;
-}
-
-.chapter-stamp {
-  font-size: 9px;
-  letter-spacing: 1.8px;
-  color: #9c7b41;
-  opacity: 0.85;
-}
-
-.letter-heading {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-weight: 600;
-  font-size: clamp(19px, 2.2vw, 28px);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  color: #271a10;
-  margin: 6px 0 10px;
-}
-
-.letter-heading em {
-  font-style: italic;
-  font-weight: 500;
-  color: #8c6a28;
-}
-
-.letter-heading:focus {
-  outline: none;
-}
-
-.salutation {
-  font-family: 'Dancing Script', cursive, var(--serif);
-  font-size: clamp(20px, 2.1vw, 25px);
-  color: #3f2e1e;
-  margin: 4px 0 8px;
-  font-weight: 600;
-}
-
-.page-p {
-  font-family: 'Lora', Georgia, serif;
-  font-size: clamp(12px, 1.25vw, 14px);
-  line-height: 1.85;
-  color: #281d13;
-  margin: 0;
-  text-align: justify;
-}
-
-.wish-quote {
-  border-left: 3px solid #b8954d;
-  background: rgba(230, 206, 158, 0.35);
-  padding: 8px 12px;
-  border-radius: 0 6px 6px 0;
-  margin: 8px 0;
-}
-
-.wish-quote p {
-  font-family: 'Lora', Georgia, serif;
-  font-style: italic;
-  font-size: clamp(11px, 1.15vw, 13px);
-  line-height: 1.75;
-  color: #24170d;
-  font-weight: 500;
-  margin: 0;
-}
-
-.letter-signature {
-  text-align: right;
-  margin-top: 6px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.sig-note {
-  font-size: 10px;
-  color: #5d4631;
-  letter-spacing: 0.5px;
-}
-
-.sig-hand {
-  font-family: 'Dancing Script', cursive, var(--serif);
-  font-size: clamp(20px, 2.2vw, 27px);
-  color: #88621d;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-/* Footer điều hướng trang */
-.page-nav-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px dashed rgba(160, 130, 85, 0.35);
-  padding-top: 8px;
-  margin-top: 6px;
-}
-
-.page-turn-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: rgba(30, 52, 40, 0.85);
-  border: 1px solid rgba(220, 190, 120, 0.4);
-  color: #f7ebd1;
-  padding: 5px 12px;
-  border-radius: 14px;
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.page-turn-btn:hover {
-  background: #2e5240;
-  color: #fff;
-  border-color: #eed69b;
-  transform: translateY(-1px);
-}
-
-.page-counter-num {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  color: #6d532a;
-}
-
-/* Nút quay lại vườn hoa */
-.journal-return {
-  margin-top: 12px;
-}
-
-.journal-back-btn {
-  background: none;
-  border: none;
-  color: #e5d1a7;
-  font-size: 12px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  cursor: pointer;
-  padding: 6px 14px;
-  transition: all 0.25s ease;
-  opacity: 0.85;
-}
-
-.journal-back-btn:hover {
-  opacity: 1;
-  color: #fff;
-  text-decoration: underline;
-  text-underline-offset: 4px;
+.letter-signature em {
+  font:italic 27px var(--serif);
+  color:#8a723e;
 }
 
 .letter-actions {
@@ -1403,218 +1142,56 @@ body.is-garden {
   text-underline-offset:4px;
 }
 
-.journal-dialog {
-  position: fixed;
-  inset: 0;
-  margin: auto;
-  width: min(1000px, calc(100% - 32px));
-  max-width: none;
-  max-height: calc(100dvh - 36px);
-  border: 0;
-  padding: 0;
-  background: transparent;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
-  scrollbar-color: #c9ad74 #1a2c24;
+.letter-dialog {
+  position:fixed;
+  inset:0;
+  margin:auto;
+  width:min(760px,calc(100% - 36px));
+  max-width:none;
+  max-height:calc(100dvh - 40px);
+  border:0;
+  padding:0;
+  background:transparent;
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:#b9a269 #fcf6e8;
+  border-radius:3px;
 }
 
-.journal-dialog::backdrop {
-  background: rgba(8, 22, 17, 0.88);
-  backdrop-filter: blur(6px);
-  animation: backdrop-in 0.35s both;
+.letter-dialog::backdrop {
+  background:#0e261ed9;
+  animation:backdrop-in .3s both;
 }
 
-.close-journal {
-  position: absolute;
-  top: 8px;
-  right: 0;
-  width: 40px;
-  height: 40px;
-  display: grid;
-  place-items: center;
-  color: #dfcaa0;
-  background: rgba(30, 48, 38, 0.85);
-  border: 1px solid rgba(220, 190, 130, 0.35);
-  font: 20px/1 var(--serif);
-  border-radius: 50%;
-  cursor: pointer;
-  z-index: 20;
-  transition: all 0.25s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+.letter-dialog .letter-paper {
+  box-shadow:none;
 }
 
-.close-journal:hover {
-  background: #315140;
-  color: #fff;
-  border-color: #e5cd96;
-  transform: scale(1.08) rotate(90deg);
+.letter-dialog .letter-top {
+  position:relative;
+  padding-right:28px;
+  gap:12px;
 }
 
-/* ========================================================
-   ANIMATION LẬT TRANG 3D
-   ======================================================== */
-
-.page-turn-out-left {
-  animation: pageFlipOutLeft 0.24s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+.close-letter {
+  position:absolute;
+  top:-14px;
+  right:-17px;
+  width:44px;
+  height:44px;
+  display:grid;
+  place-items:center;
+  color:#53694d;
+  background:none;
+  font:30px/1 var(--serif);
+  border-radius:50%;
+  z-index:2;
 }
 
-.page-turn-in-right {
-  animation: pageFlipInRight 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-
-.page-turn-out-right {
-  animation: pageFlipOutRight 0.24s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-.page-turn-in-left {
-  animation: pageFlipInLeft 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-
-@keyframes pageFlipOutLeft {
-  0% {
-    transform: rotateY(0deg);
-    opacity: 1;
-    filter: brightness(1);
-  }
-  100% {
-    transform: rotateY(-80deg) scale(0.96) skewY(-2deg);
-    opacity: 0.15;
-    filter: brightness(0.85);
-  }
-}
-
-@keyframes pageFlipInRight {
-  0% {
-    transform: rotateY(70deg) scale(0.96) skewY(2deg);
-    opacity: 0.15;
-    filter: brightness(0.88);
-  }
-  100% {
-    transform: rotateY(0deg) scale(1) skewY(0deg);
-    opacity: 1;
-    filter: brightness(1);
-  }
-}
-
-@keyframes pageFlipOutRight {
-  0% {
-    transform: rotateY(0deg);
-    opacity: 1;
-    filter: brightness(1);
-  }
-  100% {
-    transform: rotateY(80deg) scale(0.96) skewY(2deg);
-    opacity: 0.15;
-    filter: brightness(0.85);
-  }
-}
-
-@keyframes pageFlipInLeft {
-  0% {
-    transform: rotateY(-70deg) scale(0.96) skewY(-2deg);
-    opacity: 0.15;
-    filter: brightness(0.88);
-  }
-  100% {
-    transform: rotateY(0deg) scale(1) skewY(0deg);
-    opacity: 1;
-    filter: brightness(1);
-  }
-}
-
-/* ========================================================
-   RESPONSIVE CHO SỔ TAY (MOBILE / TABLET)
-   ======================================================== */
-
-@media (max-width: 860px) {
-  .journal-dialog {
-    width: calc(100% - 20px);
-    max-height: calc(100dvh - 20px);
-  }
-
-  .real-book-stage {
-    height: auto;
-    min-height: auto;
-    background: radial-gradient(ellipse at 50% 20%, #fffef8 0%, #f7f1df 70%, #ebdcb9 100%);
-    border: 7px solid #1a2f24;
-    border-radius: 12px;
-    padding: 16px 14px 14px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  .leaf-left, .leaf-right {
-    position: static;
-    width: 100%;
-    background: transparent;
-    box-shadow: none;
-    border-radius: 0;
-  }
-
-  .leaf-content {
-    padding: 0;
-    background-image: none;
-  }
-
-  .leaf-flipper {
-    display: none !important;
-  }
-
-  .page-p {
-    font-size: 13.5px;
-    line-height: 1.85;
-  }
-
-  .letter-heading {
-    font-size: 24px;
-    margin: 4px 0 8px;
-  }
-
-  .salutation {
-    font-size: 22px;
-    margin: 4px 0 6px;
-  }
-
-  .wish-quote {
-    margin: 8px 0;
-    padding: 8px 12px;
-  }
-
-  .wish-quote p {
-    font-size: 13px;
-  }
-
-  .page-nav-footer {
-    margin-top: 10px;
-    padding-top: 10px;
-  }
-
-  .page-turn-btn {
-    padding: 5px 12px;
-    font-size: 11px;
-  }
-
-  .journal-tabs {
-    gap: 6px;
-    margin-bottom: 8px;
-  }
-
-  .journal-tab {
-    padding: 5px 10px;
-    font-size: 10px;
-  }
-
-  .close-journal {
-    top: 0;
-    right: 0;
-    width: 36px;
-    height: 36px;
-    font-size: 18px;
-  }
+.close-letter:hover {
+  background:#c7b88b29;
 }
 
 @keyframes backdrop-in {
