@@ -25,7 +25,7 @@
     <meta name="twitter:image" content="https://20th10.io.vn/media/teachers/teachers-share.jpg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Dancing+Script:wght@500;600;700&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div class="classroom" aria-hidden="true">
@@ -72,60 +72,49 @@
     </div>
     <dialog class="letter-dialog journal-dialog" id="letter-dialog" aria-labelledby="letter-title">
       <div class="journal-wrapper">
-        <button class="close-letter close-journal" id="close-letter" aria-label="Khép sổ, trở về vườn hoa">×</button>
+        <button class="close-letter close-journal" id="close-letter" aria-label="Khép sổ, trở về vườn hoa">✕</button>
 
-        <div class="journal-notebook" id="journal-notebook">
-          <!-- Gáy sổ & bìa da vintage -->
-          <div class="journal-spine" aria-hidden="true">
-            <span class="spine-rivet"></span>
-            <span class="spine-stitch"></span>
-            <span class="spine-stitch"></span>
-            <span class="spine-stitch"></span>
-            <span class="spine-rivet"></span>
-          </div>
-          <div class="journal-ribbon" aria-hidden="true"></div>
+        <!-- Bookmark Tabs (Mục lục 6 bài học) -->
+        <nav class="journal-tabs" id="journal-tabs" aria-label="Mục lục các trang sổ"></nav>
 
-          <!-- Khung trang sách với hiệu ứng 3D lật trang -->
-          <div class="journal-sheet-container">
-            <article class="journal-sheet" id="journal-page">
-              <header class="sheet-header">
-                <div class="sheet-chapter">
-                  <span class="sheet-tag" id="page-tag">01 · LÒNG BIẾT ƠN</span>
-                  <span class="sheet-stamp" aria-hidden="true">✦ 20.11 · SỔ LƯU BÚT TRI ÂN ✦</span>
-                </div>
-                <div class="sheet-watermark" aria-hidden="true">
-                  <img src="/media/teachers/teachers-single-flower.webp" alt="" />
-                </div>
+        <!-- Khung cuốn sổ mở trên nền ảnh cinematic vintage -->
+        <div class="vintage-book-frame" id="journal-notebook">
+          <div class="book-spread" id="journal-page">
+            <!-- Trang bên trái -->
+            <section class="book-page page-left" aria-label="Trang trái">
+              <header class="page-header">
+                <span class="chapter-badge" id="page-tag">01 · LÒNG BIẾT ƠN</span>
+                <span class="chapter-stamp">✦ 20.11 · TRI ÂN ✦</span>
               </header>
+              <h2 id="letter-title" class="letter-heading" tabindex="-1"></h2>
+              <p class="salutation">Thầy cô kính mến,</p>
+              <p id="letter-paragraph-one" class="page-p"></p>
+            </section>
 
-              <div class="sheet-body">
-                <h2 id="letter-title" class="sheet-title" tabindex="-1"></h2>
-                <p class="salutation">Thầy cô kính mến,</p>
-                <p id="letter-paragraph-one" class="sheet-paragraph"></p>
-                <p id="letter-paragraph-two" class="sheet-paragraph"></p>
-                <div class="wish sheet-wish">
-                  <p id="wish-text"></p>
-                </div>
-                <p class="letter-signature sheet-signature">
-                  Với tất cả lòng biết ơn,<br />
-                  <em>Một người học trò.</em>
-                </p>
+            <!-- Gáy sổ ở giữa -->
+            <div class="book-crease" aria-hidden="true"></div>
+
+            <!-- Trang bên phải -->
+            <section class="book-page page-right" aria-label="Trang phải">
+              <p id="letter-paragraph-two" class="page-p"></p>
+              <div class="wish-quote">
+                <p id="wish-text"></p>
               </div>
-
-              <footer class="sheet-footer">
-                <button class="sheet-nav-btn prev-btn" id="prev-letter" aria-label="Lật về trang trước">
-                  <span aria-hidden="true">‹</span> Trang trước
+              <div class="letter-signature">
+                <span class="sig-note">Với tất cả lòng biết ơn,</span>
+                <span class="sig-hand">Một người học trò</span>
+              </div>
+              <footer class="page-nav-footer">
+                <button class="page-turn-btn prev-btn" id="prev-letter" aria-label="Lật về trang trước">
+                  <span aria-hidden="true">‹</span> Trước
                 </button>
-                <span class="sheet-counter" id="letter-counter">Trang 01 / 06</span>
-                <button class="sheet-nav-btn next-btn" id="next-letter" aria-label="Lật sang trang sau">
-                  Trang sau <span aria-hidden="true">›</span>
+                <span class="page-counter-num" id="letter-counter">Trang 01 / 06</span>
+                <button class="page-turn-btn next-btn" id="next-letter" aria-label="Lật sang trang sau">
+                  Sau <span aria-hidden="true">›</span>
                 </button>
               </footer>
-            </article>
+            </section>
           </div>
-
-          <!-- Bookmark Tabs bên hông phải sổ -->
-          <nav class="journal-tabs" id="journal-tabs" aria-label="Mục lục các trang sổ"></nav>
         </div>
 
         <div class="journal-return">

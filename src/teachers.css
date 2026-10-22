@@ -431,7 +431,7 @@ main {
 }
 
 /* ========================================================
-   VINTAGE NOTEBOOK / SỔ TAY TRI ÂN (20/11)
+   VINTAGE OPEN BOOK FRAME (20/11) - DỰA TRÊN ẢNH NỀN THẬT
    ======================================================== */
 
 .journal-wrapper {
@@ -439,115 +439,37 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px 0 20px;
+  padding: 10px 0 16px;
   width: 100%;
   box-sizing: border-box;
 }
 
-/* Khung bìa sổ da cổ điển */
-.journal-notebook {
-  position: relative;
-  width: 100%;
-  display: flex;
-  background: linear-gradient(135deg, #2b1f18 0%, #1c140f 50%, #2f2219 100%);
-  border-radius: 12px;
-  padding: 18px 20px 20px 52px;
-  box-shadow: 
-    0 35px 90px rgba(0, 0, 0, 0.75),
-    0 0 0 1px rgba(212, 175, 55, 0.3),
-    inset 0 1px 3px rgba(255, 255, 255, 0.1),
-    inset 0 0 35px rgba(0, 0, 0, 0.8);
-  box-sizing: border-box;
-  animation: letter-open .75s cubic-bezier(.2,.7,.2,1) both;
-}
-
-/* Viền góc kim loại đồng cổ (Corner accents) */
-.journal-notebook::before {
-  content: '';
-  position: absolute;
-  inset: 6px;
-  border: 1px solid rgba(212, 180, 110, 0.22);
-  border-radius: 8px;
-  pointer-events: none;
-}
-
-/* Gáy sổ bên trái */
-.journal-spine {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 48px;
-  background: linear-gradient(90deg, #160e0a 0%, #2e2017 40%, #1c130e 75%, #100b08 100%);
-  border-radius: 12px 0 0 12px;
-  box-shadow: inset -3px 0 10px rgba(0, 0, 0, 0.7);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  padding: 24px 0;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.spine-stitch {
-  width: 14px;
-  height: 2px;
-  background: #cbb483;
-  opacity: 0.6;
-  border-radius: 2px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.8);
-}
-
-.spine-rivet {
-  width: 6px;
-  height: 6px;
-  background: radial-gradient(circle at 35% 35%, #f2d89b, #937237 80%);
-  border-radius: 50%;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.7);
-}
-
-/* Dải ruy băng lụa đỏ kẹp trang */
-.journal-ribbon {
-  position: absolute;
-  top: -8px;
-  left: 30px;
-  width: 14px;
-  height: 90px;
-  background: linear-gradient(180deg, #881921 0%, #bd2c37 60%, #76141a 100%);
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 86%, 0 100%);
-  box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.45);
-  z-index: 12;
-  pointer-events: none;
-}
-
-/* Tabs mục lục bên mép phải sổ */
+/* Tabs mục lục 6 chương bài học phía trên sổ */
 .journal-tabs {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
-  z-index: 8;
-  padding: 24px 0 16px 0;
-  margin-left: -1px;
+  margin-bottom: 12px;
+  width: 100%;
+  z-index: 10;
 }
 
 .journal-tab {
-  background: #deb881;
-  color: #3b2817;
-  border: 1px solid #b7955f;
-  border-left: none;
-  border-radius: 0 8px 8px 0;
-  padding: 7px 11px 7px 9px;
-  font-size: 10px;
+  background: rgba(22, 38, 30, 0.88);
+  color: #dfcca5;
+  border: 1px solid rgba(220, 190, 130, 0.35);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.8px;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-  box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.3);
-  display: flex;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   white-space: nowrap;
 }
 
@@ -555,246 +477,240 @@ main {
   font-family: var(--serif);
   font-weight: 700;
   font-size: 11px;
-  opacity: 0.75;
+  color: #c9ab6e;
 }
 
 .journal-tab:hover {
-  background: #eed5a9;
-  transform: translateX(4px);
-  color: #241609;
+  background: #284435;
+  color: #fff;
+  border-color: #eed69b;
+  transform: translateY(-2px);
 }
 
 .journal-tab.is-active {
-  background: linear-gradient(135deg, #1b3a2c 0%, #274d3b 100%);
-  color: #faebd0;
-  border-color: #dcb874;
-  transform: translateX(7px);
-  box-shadow: 3px 5px 12px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(135deg, #d4af37 0%, #aa8222 100%);
+  color: #1a2920;
+  border-color: #fff;
+  font-weight: 700;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.45);
 }
 
 .journal-tab.is-active .tab-index {
-  color: #e5c37f;
-  opacity: 1;
+  color: #1a2920;
 }
 
-/* Khung trang sách 3D */
-.journal-sheet-container {
-  flex: 1;
+/* Khung cuốn sổ mở trên nền ảnh thật */
+.vintage-book-frame {
   position: relative;
-  perspective: 1600px;
-  min-height: 480px;
   width: 100%;
-}
-
-/* Trang giấy sổ tay vintage */
-.journal-sheet {
-  position: relative;
-  background: radial-gradient(ellipse at 50% 25%, #fffefb 0%, #f7f1df 65%, #ebdcb8 100%);
-  border-radius: 4px 10px 10px 4px;
-  padding: 30px clamp(24px, 4.5vw, 52px) 26px;
+  aspect-ratio: 1024 / 575;
+  background: url('/media/teachers/vintage-notebook.jpg') no-repeat center center;
+  background-size: cover;
+  border-radius: 14px;
   box-shadow: 
-    inset 0 0 45px rgba(160, 125, 75, 0.16),
-    -7px 0 16px rgba(0, 0, 0, 0.22),
-    0 4px 20px rgba(0, 0, 0, 0.15);
-  background-image: repeating-linear-gradient(
-    transparent,
-    transparent 28px,
-    rgba(165, 135, 90, 0.14) 28px,
-    rgba(165, 135, 90, 0.14) 29px
-  );
-  transform-origin: left center;
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-  will-change: transform, opacity;
+    0 30px 90px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(220, 190, 120, 0.3);
+  overflow: hidden;
   box-sizing: border-box;
 }
 
-/* Viền giấy mộc */
-.journal-sheet::before {
-  content: '';
+/* Khu vực 2 trang sách mở ở giữa ảnh */
+.book-spread {
   position: absolute;
-  inset: 7px;
-  border: 1px dashed rgba(180, 150, 100, 0.35);
-  border-radius: 2px 8px 8px 2px;
+  top: 13%;
+  bottom: 12.5%;
+  left: 19.5%;
+  right: 10.5%;
+  display: grid;
+  grid-template-columns: 1fr 18px 1fr;
+  perspective: 1400px;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+/* Gáy sách ở giữa 2 trang */
+.book-crease {
+  position: relative;
+  height: 100%;
   pointer-events: none;
 }
 
-/* Header trang sổ */
-.sheet-header {
+/* Trang sách */
+.book-page {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Trang bên trái */
+.page-left {
+  padding: 10px 14px 10px 8px;
+}
+
+.page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(180, 150, 100, 0.35);
-  padding-bottom: 14px;
-  margin-bottom: 18px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed rgba(160, 130, 85, 0.35);
 }
 
-.sheet-chapter {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.sheet-tag {
-  font-size: 11px;
-  letter-spacing: 2px;
-  font-weight: 600;
-  color: #796131;
-  background: rgba(206, 173, 114, 0.22);
-  padding: 4px 12px;
-  border-radius: 20px;
-  border: 1px solid rgba(184, 150, 90, 0.35);
-}
-
-.sheet-stamp {
+.chapter-badge {
   font-size: 10px;
-  letter-spacing: 2.2px;
-  color: #8c713c;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  color: #7d6029;
+  text-transform: uppercase;
+}
+
+.chapter-stamp {
+  font-size: 9px;
+  letter-spacing: 1.8px;
+  color: #9c7b41;
   opacity: 0.85;
 }
 
-.sheet-watermark {
-  position: absolute;
-  top: -4px;
-  right: -8px;
-  width: 58px;
-  height: 58px;
-  opacity: 0.24;
-  pointer-events: none;
-  filter: sepia(0.65) drop-shadow(1px 2px 4px rgba(0,0,0,0.1));
+.letter-heading {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(19px, 2.2vw, 28px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #271a10;
+  margin: 6px 0 10px;
 }
 
-.sheet-watermark img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+.letter-heading em {
+  font-style: italic;
+  font-weight: 500;
+  color: #8c6a28;
 }
 
-/* Nội dung thư */
-.sheet-body {
-  position: relative;
-  z-index: 1;
-}
-
-.sheet-title {
-  font: 500 calc(clamp(32px, 3.8vw, 48px) + 2px)/1.08 var(--serif);
-  letter-spacing: -0.03em;
-  color: #271c14;
-  margin: 12px 0 16px;
-}
-
-.sheet-title:focus {
+.letter-heading:focus {
   outline: none;
 }
 
-.sheet-title em {
-  color: #8c7038;
-  font-style: italic;
-  font-weight: 400;
+.salutation {
+  font-family: 'Dancing Script', cursive, var(--serif);
+  font-size: clamp(20px, 2.1vw, 25px);
+  color: #3f2e1e;
+  margin: 4px 0 8px;
+  font-weight: 600;
 }
 
-.sheet-body .salutation {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 24px;
-  color: #3b2b1e;
-  margin: 14px 0 10px;
-}
-
-.sheet-paragraph {
-  font-size: 14px;
-  line-height: 1.95;
-  color: #2d2218;
-  margin: 12px 0;
-}
-
-.sheet-wish {
-  border-left: 3px solid #b89858;
-  background: rgba(230, 208, 166, 0.28);
-  padding: 12px 18px;
-  border-radius: 0 6px 6px 0;
-  margin: 18px 0;
-  min-height: auto;
-}
-
-.sheet-wish p {
-  font-size: 14px;
+.page-p {
+  font-family: 'Lora', Georgia, serif;
+  font-size: clamp(11.5px, 1.2vw, 13.5px);
   line-height: 1.85;
-  color: #281e15;
+  color: #281d13;
+  margin: 0;
+  text-align: justify;
+}
+
+/* Trang bên phải */
+.page-right {
+  padding: 18px 12px 10px 14px;
+}
+
+.wish-quote {
+  border-left: 3px solid #b8954d;
+  background: rgba(230, 206, 158, 0.35);
+  padding: 8px 12px;
+  border-radius: 0 6px 6px 0;
+  margin: 8px 0;
+}
+
+.wish-quote p {
+  font-family: 'Lora', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(11px, 1.15vw, 13px);
+  line-height: 1.75;
+  color: #24170d;
   font-weight: 500;
   margin: 0;
 }
 
-.sheet-signature {
-  font-size: 12px;
+.letter-signature {
   text-align: right;
-  line-height: 1.7;
-  color: #55412b;
-  margin-top: 18px;
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
-.sheet-signature em {
-  font: italic 26px var(--serif);
-  color: #886d34;
+.sig-note {
+  font-size: 10px;
+  color: #5d4631;
+  letter-spacing: 0.5px;
 }
 
-/* Footer & Nút lật trang */
-.sheet-footer {
+.sig-hand {
+  font-family: 'Dancing Script', cursive, var(--serif);
+  font-size: clamp(20px, 2.2vw, 27px);
+  color: #88621d;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Footer điều hướng trang */
+.page-nav-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid rgba(180, 150, 100, 0.35);
-  padding-top: 16px;
-  margin-top: 20px;
+  border-top: 1px dashed rgba(160, 130, 85, 0.35);
+  padding-top: 8px;
+  margin-top: 6px;
 }
 
-.sheet-nav-btn {
+.page-turn-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(224, 196, 146, 0.3);
-  border: 1px solid rgba(175, 140, 85, 0.4);
-  color: #3f2e1c;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 12px;
+  gap: 5px;
+  background: rgba(30, 52, 40, 0.82);
+  border: 1px solid rgba(220, 190, 120, 0.35);
+  color: #f7ebd1;
+  padding: 4px 10px;
+  border-radius: 14px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.8px;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.2s ease;
 }
 
-.sheet-nav-btn:hover {
-  background: rgba(200, 165, 105, 0.5);
-  color: #1a120b;
+.page-turn-btn:hover {
+  background: #2e5240;
+  color: #fff;
+  border-color: #eed69b;
   transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
 
-.sheet-counter {
-  font-family: var(--serif);
-  font-size: 14px;
+.page-counter-num {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 2px;
-  color: #6b5329;
+  letter-spacing: 1.5px;
+  color: #6d532a;
 }
 
 /* Nút quay lại vườn hoa */
 .journal-return {
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
 .journal-back-btn {
   background: none;
   border: none;
-  color: #dfcaa0;
+  color: #e5d1a7;
   font-size: 12px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   cursor: pointer;
-  padding: 6px 12px;
+  padding: 6px 14px;
   transition: all 0.25s ease;
   opacity: 0.85;
 }
@@ -1416,7 +1332,7 @@ body.is-garden {
   position: fixed;
   inset: 0;
   margin: auto;
-  width: min(840px, calc(100% - 32px));
+  width: min(1000px, calc(100% - 32px));
   max-width: none;
   max-height: calc(100dvh - 36px);
   border: 0;
@@ -1539,98 +1455,85 @@ body.is-garden {
 
 @media (max-width: 860px) {
   .journal-dialog {
-    width: calc(100% - 24px);
+    width: calc(100% - 20px);
+    max-height: calc(100dvh - 20px);
   }
 
-  .journal-tabs {
-    order: -1;
+  .vintage-book-frame {
+    aspect-ratio: auto;
+    min-height: auto;
+    background: radial-gradient(ellipse at 50% 20%, #fffef8 0%, #f7f1df 70%, #ebdcb9 100%);
+    border: 7px solid #1a2f24;
+    border-radius: 12px;
+    padding: 16px 14px 14px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+  }
+
+  .book-spread {
     position: static;
-    right: auto;
-    top: auto;
-    flex-direction: row;
-    overflow-x: auto;
-    padding: 0 4px 10px;
-    margin-bottom: 8px;
-    margin-left: 0;
-    width: 100%;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
   }
 
-  .journal-tabs::-webkit-scrollbar {
+  .book-crease {
     display: none;
   }
 
+  .page-left, .page-right {
+    padding: 0;
+  }
+
+  .page-p {
+    font-size: 13.5px;
+    line-height: 1.85;
+  }
+
+  .letter-heading {
+    font-size: 24px;
+    margin: 4px 0 8px;
+  }
+
+  .salutation {
+    font-size: 22px;
+    margin: 4px 0 6px;
+  }
+
+  .wish-quote {
+    margin: 8px 0;
+    padding: 8px 12px;
+  }
+
+  .wish-quote p {
+    font-size: 13px;
+  }
+
+  .page-nav-footer {
+    margin-top: 10px;
+    padding-top: 10px;
+  }
+
+  .page-turn-btn {
+    padding: 5px 12px;
+    font-size: 11px;
+  }
+
+  .journal-tabs {
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
   .journal-tab {
-    border-radius: 6px;
-    border-left: 1px solid #b7955f;
-    padding: 6px 12px;
-    flex-shrink: 0;
-  }
-
-  .journal-tab.is-active {
-    transform: translateY(-2px);
-  }
-
-  .journal-notebook {
-    flex-direction: column;
-    padding: 16px 14px 16px 36px;
-  }
-
-  .journal-spine {
-    width: 30px;
-  }
-
-  .journal-ribbon {
-    left: 18px;
-    width: 11px;
-    height: 65px;
+    padding: 5px 10px;
+    font-size: 10px;
   }
 
   .close-journal {
-    top: -6px;
+    top: 0;
     right: 0;
     width: 36px;
     height: 36px;
     font-size: 18px;
-  }
-}
-
-@media (max-width: 480px) {
-  .journal-notebook {
-    padding: 14px 10px 14px 28px;
-  }
-
-  .journal-spine {
-    width: 22px;
-  }
-
-  .journal-ribbon {
-    left: 12px;
-    width: 9px;
-    height: 50px;
-  }
-
-  .journal-sheet {
-    padding: 20px 16px 18px;
-  }
-
-  .sheet-title {
-    font-size: 28px;
-  }
-
-  .sheet-paragraph {
-    font-size: 13px;
-    line-height: 1.85;
-  }
-
-  .sheet-nav-btn {
-    padding: 6px 12px;
-    font-size: 11px;
-  }
-
-  .sheet-counter {
-    font-size: 12px;
   }
 }
 
